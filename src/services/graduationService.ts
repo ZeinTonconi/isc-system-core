@@ -7,7 +7,7 @@ export const getGraduationProcessById = async (processId: number): Promise<Gradu
 
 export const updateGraduationProcess = async (
   id: number,
-  updatedData: GraduationProcess
+  updatedData: Partial<GraduationProcess>
 ): Promise<GraduationProcess> => {
   return GraduationProcessRepository.updateGraduationProcess(id, updatedData);
 };

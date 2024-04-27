@@ -18,7 +18,7 @@ export const getGraduationProcessById = async (processId: number) => {
 
 export const updateGraduationProcess = async (
   processId: number,
-  updatedData: GraduationProcess
+  updatedData: Partial<GraduationProcess>
 ) => {
   try {
     const updatedGraduationProcess = await GraduationProcessService.updateGraduationProcess(
