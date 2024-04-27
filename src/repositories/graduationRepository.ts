@@ -38,3 +38,13 @@ export const updateGraduationProcess = async (id: number, updatedData: Graduatio
     throw new Error('Error updating Graduation Process');
   }
 };
+
+export const createGraduationProcess = async (data: GraduationProcess) => {
+  try {
+    const [newGraduationProcess] = await db(tableName).insert(data).returning('*');
+    return newGraduationProcess;
+  } catch (error) {
+    console.error('Error in GraduationProcessRepository.createGraduationProcess:', error);
+    throw new Error('Error creating Graduation Process');
+  }
+};
