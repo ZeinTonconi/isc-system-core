@@ -1,6 +1,8 @@
 import User from '../models/userInterface';
 import * as UserRepository from '../repositories/userRepository';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
+
+const logger = buildLogger('userService');
 
 export const findByEmail = async (email: string): Promise<User> => {
   return UserRepository.getUserByEmail(email);

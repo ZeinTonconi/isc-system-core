@@ -1,5 +1,7 @@
 import * as UserService from '../services/userService';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
+
+const logger = buildLogger('professorInteractor');
 
 export const getProfessors = async () => {
   try {

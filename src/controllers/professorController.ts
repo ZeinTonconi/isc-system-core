@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import * as ProfessorService from '../interactors/professorInteractor';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
+
+const logger = buildLogger('professorController');
 
 export const getProfessorsController = async (req: Request, res: Response) => {
   try {

@@ -1,9 +1,11 @@
 import * as UserService from '../services/userService';
 import * as AuthenticationService from '../services/authenticationService';
 import generateToken from '../utils/jwtUtility';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
 import UserResponse from '../models/userResponse';
 import { AuthenticationError } from '../errors/authenticationError';
+
+const logger = buildLogger('loginController');
 
 export const login = async (email: string, password: string): Promise<UserResponse | string> => {
   logger.debug(`Attempting login for email: ${email}`);

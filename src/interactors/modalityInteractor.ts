@@ -1,5 +1,7 @@
 import * as ModalityService from '../services/modalityService';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
+
+const logger = buildLogger('modalityInteractor');
 
 export const getModalities = async () => {
   try {
