@@ -1,3 +1,5 @@
+// knexfile.ts
+
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
@@ -9,6 +11,9 @@ module.exports = {
       database: 'verceldb',
       user: 'default',
       password: 'mGpl4xbjP6MB',
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   },
 
@@ -19,6 +24,9 @@ module.exports = {
       database: 'verceldb',
       user: 'default',
       password: 'mGpl4xbjP6MB',
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
     pool: {
       min: 2,
@@ -35,6 +43,9 @@ module.exports = {
       database: 'my_db',
       user: 'username',
       password: 'password',
+      ssl: {
+        rejectUnauthorized: true,
+      },
     },
     pool: {
       min: 2,
