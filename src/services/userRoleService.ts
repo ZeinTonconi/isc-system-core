@@ -1,9 +1,8 @@
 import * as UserRolesRepository from '../repositories/userRolesRepository';
 
-const studentRole = 4;
-export const createUserStudent = async (userId: number) => {
+export const createUserRole = async (userId: number, studentRole: number) => {
   try {
-    return UserRolesRepository.assignStudentRole(userId, studentRole);
+    return UserRolesRepository.assignUserRole(userId, studentRole);
   } catch (error) {
     console.log('Error creating User');
     throw Error('Error creating User');

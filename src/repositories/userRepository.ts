@@ -38,8 +38,7 @@ export const getStudents = async () => {
 
 export const createUser = async (userData: User) => {
   try {
-    const [newUserId] = await db('users').insert(userData).returning('id');
-    const newUser = await db('students').where({ id: newUserId }).first();
+    const [newUser] = await db('users').insert(userData).returning('id');
     return newUser;
   } catch (error) {
     console.error(error);

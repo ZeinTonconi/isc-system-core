@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as StudentInteractor from '../interactors/studentInteractor';
+import createUserRequest from '../dtos/createUserRequest';
 
 export const getStudents = async (req: Request, res: Response) => {
   try {
@@ -16,7 +17,7 @@ export const getStudents = async (req: Request, res: Response) => {
 
 export const createStudent = async (req: Request, res: Response) => {
   try {
-    const studentData = req.body;
+    const studentData: createUserRequest = req.body;
     const newStudent = await StudentInteractor.createStudent(studentData);
     res
       .status(201)
