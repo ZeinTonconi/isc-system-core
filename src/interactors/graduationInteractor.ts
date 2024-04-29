@@ -1,3 +1,4 @@
+import createGraduationProcessRequest from '../dtos/createGraduationProcessRequest';
 import GraduationProcess from '../models/graduationProcess';
 import * as GraduationProcessService from '../services/graduationService';
 
@@ -29,5 +30,16 @@ export const updateGraduationProcess = async (
   } catch (error) {
     console.error('Error in GraduationProcessService.updateGraduationProcess:', error);
     throw new Error('Error updating Graduation Process');
+  }
+};
+
+export const createGraduationProcess = async (
+  graduationProcess: createGraduationProcessRequest
+) => {
+  try {
+    return await GraduationProcessService.createGraduationProcess(graduationProcess);
+  } catch (error) {
+    console.error('Error in GraduationProcessService.createGraduationProcess:', error);
+    throw new Error('Error creating Graduation Process');
   }
 };

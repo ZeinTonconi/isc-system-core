@@ -4,7 +4,7 @@ interface GraduationProcess {
   modality_id: number;
   project_name: string;
   seminar_enrollment: boolean;
-  date_seminar_enrollment: Date;
+  date_seminar_enrollment?: Date;
   period: string;
   tutor_letter: boolean;
   tutor_id?: number;
