@@ -9,9 +9,11 @@ interface GraduationProcess {
   tutor_letter: boolean;
   tutor_id?: number;
   tutor_approval: boolean;
+  date_tutor_assignament?: Date;
   reviewer_letter: boolean;
   reviewer_id?: number;
   reviewer_approval: boolean;
+  date_reviewer_assignament?: Date;
 }
 
 export default GraduationProcess;

@@ -26,7 +26,10 @@ export const getGraduationProcessById = async (id: number) => {
   }
 };
 
-export const updateGraduationProcess = async (id: number, updatedData: GraduationProcess) => {
+export const updateGraduationProcess = async (
+  id: number,
+  updatedData: Partial<GraduationProcess>
+) => {
   try {
     const updatedRows = await db(tableName).where({ id }).update(updatedData);
     if (updatedRows === 0) {
