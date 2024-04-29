@@ -3,6 +3,8 @@ import * as UserService from '../services/userService';
 import * as UserRoleService from '../services/userRoleService';
 import User from '../models/userInterface';
 
+const studentRole = 1;
+
 export const getStudents = async () => {
   try {
     const students = await StudentService.getStudents();
@@ -27,7 +29,7 @@ export const createStudent = async (studentData: User) => {
     }
 
     const { id } = newStudent;
-    const userRole = await UserRoleService.createUserStudent(id);
+    const userRole = await UserRoleService.createUserRole(id, studentRole);
     if (!userRole) {
       throw new Error('Error creating the student Role');
     }
