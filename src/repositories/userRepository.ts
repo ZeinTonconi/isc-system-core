@@ -1,7 +1,9 @@
 import UserRole from '../constants/roles';
 import User from '../models/userInterface';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
 import db from './pg-connection';
+
+const logger = buildLogger('userRepository');
 
 export const getUserByEmail = async (email: string) => {
   try {

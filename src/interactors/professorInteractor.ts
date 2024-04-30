@@ -1,7 +1,9 @@
 import User from '../models/userInterface';
 import * as UserService from '../services/userService';
 import * as UserRoleService from '../services/userRoleService';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
+
+const logger = buildLogger('professorInteractor');
 
 const professorRole = 2;
 
