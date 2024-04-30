@@ -1,0 +1,24 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+const DEFAULT_SERVER_PORT = 8000;
+const DEFAULT_NODE_ENV = 'development';
+
+const config = {
+  env: process.env.NODE_ENV || DEFAULT_NODE_ENV,
+  server: {
+    port: parseInt(process.env.SERVER_PORT || '', 10) || DEFAULT_SERVER_PORT,
+  },
+  database: {
+    host: process.env.DB_HOST || 'localhost:5467',
+    name: process.env.DB_NAME || 'verceldb',
+    user: process.env.DB_USER || 'default',
+    password: process.env.DB_PASSWORD || 'mGpl4xbjP6MB',
+  },
+  jwt: {
+    tokenSecret: process.env.TOKEN_SECRET || 'yourSecretKey',
+  },
+  allowedOrigins: [],
+};
+
+export default config;

@@ -1,4 +1,6 @@
-// knexfile.ts
+import config from './src/config/config';
+
+const { database } = config;
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
@@ -7,10 +9,10 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host: 'ep-calm-bird-74128633-pooler.us-east-1.postgres.vercel-storage.com',
-      database: 'verceldb',
-      user: 'default',
-      password: 'mGpl4xbjP6MB',
+      host: database.host,
+      database: database.name,
+      user: database.user,
+      password: database.password,
       ssl: {
         rejectUnauthorized: false,
       },
@@ -20,10 +22,10 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      host: 'ep-calm-bird-74128633-pooler.us-east-1.postgres.vercel-storage.com',
-      database: 'verceldb',
-      user: 'default',
-      password: 'mGpl4xbjP6MB',
+      host: database.host,
+      database: database.name,
+      user: database.user,
+      password: database.password,
       ssl: {
         rejectUnauthorized: false,
       },
@@ -40,9 +42,10 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      host: database.host,
+      database: database.name,
+      user: database.user,
+      password: database.password,
       ssl: {
         rejectUnauthorized: true,
       },
