@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import config from '../config/config';
 //TODO: use envs
-const JWT_SECRET = 'yourSecretKey';
+const JWT_SECRET = config.jwt.tokenSecret;
 
 const generateToken = (userId: number) => {
   const payload = {
