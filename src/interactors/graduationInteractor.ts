@@ -43,3 +43,13 @@ export const createGraduationProcess = async (
     throw new Error('Error creating Graduation Process');
   }
 };
+
+export const getGraduationProcesses = async () => {
+  try {
+    const graduationProcesses = await GraduationProcessService.getGraduationProcesses();
+    return graduationProcesses;
+  } catch (error) {
+    console.error('Error fetching graduation processes:', error);
+    throw new Error('Error fetching graduation processes');
+  }
+};

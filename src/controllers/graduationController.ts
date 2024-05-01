@@ -57,3 +57,19 @@ export const createGraduationProcessController = async (req: Request, res: Respo
     res.status(500).json({ success: false, message: error || 'Internal server error' });
   }
 };
+
+export const getGraduationProcessesController = async (req: Request, res: Response) => {
+  try {
+    const graduationProcesses = await GraduationProcessInteractor.getGraduationProcesses();
+    if (graduationProcesses.length === 0) {
+      return res.status(404).json({ success: false, message: 'No graduation processes found' });
+    }
+    res.json({
+      success: true,
+      data: graduationProcesses,
+      message: 'Graduation processes retrieved successfully',
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};

@@ -26,3 +26,7 @@ export const createGraduationProcess = async (
   };
   return GraduationProcessRepository.createGraduationProcess(newGraduationProcess);
 };
+
+export const getGraduationProcesses = async (): Promise<GraduationProcess[]> => {
+  return GraduationProcessRepository.getGraduationProcesses();
+};

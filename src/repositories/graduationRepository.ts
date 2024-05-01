@@ -51,3 +51,26 @@ export const createGraduationProcess = async (data: GraduationProcess) => {
     throw new Error('Error creating Graduation Process');
   }
 };
+
+export const getGraduationProcesses = async () => {
+  try {
+    const students = await db('graduation_process as gp')
+      .select(
+        'u.name as student_name',
+        'm.name as modality',
+        'tutor.name as tutor_name',
+        'reviewer.name as reviewer_name',
+        'gp.period as period',
+        'gp.id'
+      )
+      .join('users as u', 'u.id', '=', 'gp.student_id')
+      .join('modalities as m', 'm.id', '=', 'gp.modality_id')
+      .join('users as tutor', 'tutor.id', '=', 'gp.tutor_id')
+      .join('users as reviewer', 'reviewer.id', '=', 'gp.reviewer_id');
+    console.log('🚀 ~ file: userRepository.ts:16 ~ getStudents ~ students:', students);
+    return students;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
