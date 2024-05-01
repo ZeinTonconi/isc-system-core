@@ -17,6 +17,12 @@ module.exports = {
         rejectUnauthorized: false,
       },
     },
+    migrations: {
+      directory: './data/migrations',
+    },
+    seeds: {
+      directory: './data/seeds',
+    },
   },
 
   staging: {
