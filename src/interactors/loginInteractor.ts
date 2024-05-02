@@ -1,6 +1,6 @@
 import * as UserService from '../services/userService';
 import * as AuthenticationService from '../services/authenticationService';
-import generateToken from '../utils/jwtUtility';
+import { generateToken } from '../utils/jwtUtility';
 import { buildLogger } from '../plugin/logger';
 import UserResponse from '../models/userResponse';
 import { AuthenticationError } from '../errors/authenticationError';
@@ -17,12 +17,12 @@ export const login = async (email: string, password: string): Promise<UserRespon
     throw new AuthenticationError('Invalid username or password');
   }
 
-  const { id } = user;
+  const { id, roles } = user;
   if (!id) {
     logger.warn(`Login failed: User not have id: ${email}`);
     throw new AuthenticationError('Invalid username or password');
   }
-  const token = generateToken(id);
+  const token = generateToken(id, roles);
   logger.debug(`Token generated for user ID: ${user.id}`);
 
   const isValidPassword = await AuthenticationService.verifyPassword(password, user.password);

@@ -30,5 +30,3 @@ yarn-error.log*
 
 # Ignore .DS_Store files (macOS)
 .DS_Store
-
-migrations
