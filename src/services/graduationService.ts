@@ -1,4 +1,4 @@
-import createGraduationProcessRequest from '../dtos/createGraduationProcessRequest';
+import NewGraduationProcess from '../dtos/newGraduationProcess';
 import GraduationProcess from '../models/graduationProcess';
 import * as GraduationProcessRepository from '../repositories/graduationRepository';
 
@@ -13,9 +13,7 @@ export const updateGraduationProcess = async (
   return GraduationProcessRepository.updateGraduationProcess(id, updatedData);
 };
 
-export const createGraduationProcess = async (
-  graduationProcess: createGraduationProcessRequest
-) => {
+export const createGraduationProcess = async (graduationProcess: NewGraduationProcess) => {
   const newGraduationProcess = {
     ...graduationProcess,
     seminar_enrollment: false,
@@ -24,6 +22,8 @@ export const createGraduationProcess = async (
     reviewer_letter: false,
     reviewer_approval: false,
   };
+  console.log(newGraduationProcess);
+
   return GraduationProcessRepository.createGraduationProcess(newGraduationProcess);
 };
 
