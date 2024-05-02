@@ -7,8 +7,8 @@ export const getGraduationProcessById = async (id: number) => {
   try {
     const graduationProcess = await db(`${tableName} as gp`)
       .join('users as student', 'gp.student_id', 'student.id')
-      .join('users as tutor', 'gp.tutor_id', 'tutor.id')
-      .join('users as reviewer', 'gp.reviewer_id', 'reviewer.id')
+      .leftJoin('users as tutor', 'gp.tutor_id', 'tutor.id')
+      .leftJoin('users as reviewer', 'gp.reviewer_id', 'reviewer.id')
       .join('modalities', 'gp.modality_id', 'modalities.id')
       .select(
         'student.name as student_name',

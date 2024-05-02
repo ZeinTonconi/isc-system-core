@@ -5,6 +5,7 @@ import * as GraduationProcessService from '../services/graduationService';
 export const getGraduationProcessById = async (processId: number) => {
   try {
     const process = await GraduationProcessService.getGraduationProcessById(processId);
+    console.log("🚀 ~ getGraduationProcessById ~ process:", processId)
 
     if (!process) {
       return 'There is no process';
