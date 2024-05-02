@@ -26,3 +26,19 @@ export const createStudent = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: err });
   }
 };
+
+export const getStudentByCode = async (req: Request, res: Response) => {
+  const userCode = parseInt(req.params.code);
+
+  try {
+    const student = await StudentInteractor.getStudentByCode(userCode);
+    if (!student) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'No student found with the provided code' });
+    }
+    res.json({ success: true, data: student, message: 'Student retrieved successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};

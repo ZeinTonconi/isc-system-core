@@ -20,6 +20,15 @@ export const getStudents = async () => {
   }
 };
 
+export const getStudentByCode = async (studentCode: number) => {
+  try {
+    return await StudentService.getStudentByCode(studentCode);
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    throw new Error('Error fetching students');
+  }
+};
+
 export const createStudent = async (studentData: User) => {
   try {
     const newStudent = await UserService.createUser(studentData);

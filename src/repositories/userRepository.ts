@@ -26,11 +26,33 @@ export const getStudents = async () => {
     const students = await db('users as u')
       .select('u.id', 'u.name as name', 'u.lastname as lastName', 'u.mothername as motherName')
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
-      .where('ur.role_id', UserRole.STUDENT);
+      .where('ur.role_id', UserRole.STUDENT.id);
     return students;
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+export const getStudentByCode = async (userCode: number) => {
+  try {
+    const student = await db('users as u')
+      .select(
+        'u.id',
+        'u.name as student_name',
+        'u.lastname as lastName',
+        'u.mothername as motherName',
+        'u.code'
+      )
+      .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
+      .where('ur.role_id', UserRole.STUDENT.id)
+      .andWhere('u.code', userCode)
+      .first();
+
+    return student || null;
+  } catch (error) {
+    console.error('Error in getStudentByCode:', error);
+    throw new Error('Error fetching student by code');
   }
 };
 
