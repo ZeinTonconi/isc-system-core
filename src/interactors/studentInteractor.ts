@@ -1,7 +1,7 @@
 import * as StudentService from '../services/studentService';
 import * as UserService from '../services/userService';
 import * as UserRoleService from '../services/userRoleService';
-import User from '../models/userInterface';
+import createUserRequest from '../dtos/createUserRequest';
 
 const studentRole = 1;
 
@@ -20,7 +20,7 @@ export const getStudents = async () => {
   }
 };
 
-export const createStudent = async (studentData: User) => {
+export const createStudent = async (studentData: createUserRequest) => {
   try {
     const newStudent = await UserService.createUser(studentData);
 
