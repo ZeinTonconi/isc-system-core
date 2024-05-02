@@ -15,6 +15,10 @@ const createGraduationProcessSchema = Joi.object({
   period: Joi.string().required().messages({
     'any.required': 'Period is required',
   }),
+  stage_id: Joi.number().integer().required().messages({
+    'number.base': 'Stage ID must be an integer',
+    'any.required': 'Stage ID is required',
+  }),
 });
 
 export { createGraduationProcessSchema };

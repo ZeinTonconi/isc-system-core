@@ -72,7 +72,7 @@ export const getProfessors = async () => {
     const professors = await db('users as u')
       .select('u.id', 'u.name as name', 'u.lastname as lastName', 'u.mothername as motherName')
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
-      .where('ur.role_id', UserRole.PROFESSOR);
+      .where('ur.role_id', UserRole.PROFESSOR.id);
     logger.info('Professors fetched successfully.');
     logger.debug(`Fetched professors: ${JSON.stringify(professors)}`);
     return professors;
