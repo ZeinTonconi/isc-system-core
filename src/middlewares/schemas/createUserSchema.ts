@@ -1,9 +1,6 @@
 import Joi from 'joi';
 
 const baseUserSchema = {
-  username: Joi.string().required().messages({
-    'any.required': 'Username is required.',
-  }),
   name: Joi.string().required().messages({
     'any.required': 'Name is required.',
   }),
@@ -15,9 +12,11 @@ const baseUserSchema = {
     'string.email': 'Please provide a valid email address.',
     'any.required': 'Email is required.',
   }),
-  password: Joi.string().min(6).required().messages({
-    'string.min': 'Password must be at least 6 characters long.',
-    'any.required': 'Password is required.',
+  code: Joi.string().required().messages({
+    'any.required': 'Code is required.',
+  }),
+  phone: Joi.string().required().messages({
+    'any.required': 'Phone name is required.',
   }),
 };
 
@@ -31,6 +30,9 @@ const createStudentSchema = Joi.object({
 
 const createProfessorSchema = Joi.object({
   ...baseUserSchema,
+  degree: Joi.string().required().messages({
+    'any.required': 'Degree name is required.',
+  }),
 });
 
 export { createAdminSchema, createStudentSchema, createProfessorSchema };

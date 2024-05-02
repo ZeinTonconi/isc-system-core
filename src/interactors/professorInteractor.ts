@@ -1,7 +1,7 @@
-import User from '../models/userInterface';
 import * as UserService from '../services/userService';
 import * as UserRoleService from '../services/userRoleService';
 import { buildLogger } from '../plugin/logger';
+import createUserRequest from '../dtos/createUserRequest';
 
 const logger = buildLogger('professorInteractor');
 
@@ -25,7 +25,7 @@ export const getProfessors = async () => {
   }
 };
 
-export const createProfessor = async (professorData: User) => {
+export const createProfessor = async (professorData: createUserRequest) => {
   try {
     const newProfessor = await UserService.createUser(professorData);
 

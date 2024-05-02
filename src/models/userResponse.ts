@@ -3,7 +3,7 @@ interface UserResponse {
   username: string;
   name: string;
   lastname: string;
-  mothername: string;
+  mothername?: string;
   password?: string;
   email: string;
   token: string;

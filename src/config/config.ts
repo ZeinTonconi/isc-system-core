@@ -19,6 +19,7 @@ const config = {
     tokenSecret: process.env.TOKEN_SECRET || 'yourSecretKey',
   },
   allowedOrigins: [],
+  defaultUserPassword: process.env.DEFAULT_USER_PASSWORD || '123456',
 };
 
 export default config;
