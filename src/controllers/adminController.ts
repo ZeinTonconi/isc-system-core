@@ -5,7 +5,7 @@ import createUserRequest from '../dtos/createUserRequest';
 export const createAdmin = async (req: Request, res: Response) => {
   try {
     const studentData: createUserRequest = req.body;
-    const newStudent = await AdminInteractor.createStudent(studentData);
+    const newStudent = await AdminInteractor.createAdmin(studentData);
     res
       .status(201)
       .json({ success: true, student: newStudent, message: 'Admin created successfully' });

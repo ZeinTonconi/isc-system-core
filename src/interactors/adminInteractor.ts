@@ -4,7 +4,7 @@ import createUserRequest from '../dtos/createUserRequest';
 
 const adminRole = 3;
 
-export const createStudent = async (studentData: createUserRequest) => {
+export const createAdmin = async (studentData: createUserRequest) => {
   try {
     const newStudent = await UserService.createUser(studentData);
 

@@ -12,7 +12,7 @@ router
   .route('/')
   .post(
     checkUserAuth,
-    requireRole([UserRole.ADMIN]),
+    requireRole([UserRole.ADMIN.name]),
     validateBody(createAdminSchema),
     AdminController.createAdmin
   );
