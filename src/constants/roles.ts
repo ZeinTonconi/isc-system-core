@@ -1,7 +1,7 @@
 enum UserRole {
-  STUDENT = 1,
-  PROFESSOR = 2,
-  ADMIN = 3,
+  STUDENT = 'student',
+  PROFESSOR = 'professor',
+  ADMIN = 'admin',
 }
 
 export default UserRole;

@@ -6,6 +6,7 @@ interface User {
   mothername: string;
   password: string;
   email: string;
+  roles?: string[];
 }
 
 export default User;
