@@ -2,17 +2,24 @@ import User from '../models/userInterface';
 import * as UserRepository from '../repositories/userRepository';
 import * as AuthenticationService from './authenticationService';
 import { buildLogger } from '../plugin/logger';
+import config from '../config/config';
+import createUserRequest from '../dtos/createUserRequest';
 
 const logger = buildLogger('userService');
+const defaultUserPassword = config.defaultUserPassword;
 
 export const findByEmail = async (email: string): Promise<User> => {
   return UserRepository.getUserByEmail(email);
 };
 
-export const createUser = async (user: User) => {
+export const createUser = async (user: createUserRequest) => {
   try {
-    const hashedPassword = await AuthenticationService.hashPassword(user.password);
-    return await UserRepository.createUser({ ...user, password: hashedPassword });
+    const hashedPassword = await AuthenticationService.hashPassword(defaultUserPassword);
+    return await UserRepository.createUser({
+      ...user,
+      password: hashedPassword,
+      username: user.code + user.name + user.lastname,
+    });
   } catch (error) {
     console.log('Error creating User');
     throw Error('Error creating User');
