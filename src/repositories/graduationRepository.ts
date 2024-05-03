@@ -66,7 +66,7 @@ export const getGraduationProcesses = async () => {
       .join('users as u', 'u.id', '=', 'gp.student_id')
       .join('modalities as m', 'm.id', '=', 'gp.modality_id')
       .leftJoin('users as tutor', 'tutor.id', '=', 'gp.tutor_id')
-      .leftJoin('users as reviewer', 'reviewer.id', '=', 'gp.reviewer_id');    
+      .leftJoin('users as reviewer', 'reviewer.id', '=', 'gp.reviewer_id');
     return students;
   } catch (error) {
     console.error(error);
