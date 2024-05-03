@@ -24,6 +24,8 @@ const updateGraduationProcessSchema = Joi.object({
   tutor_approval: Joi.boolean().optional(),
   tutor_letter: Joi.boolean().optional(),
   date_tutor_assignament: Joi.date().allow(null).optional(),
+  tutor_approval_date: Joi.date().allow(null).optional(),
+  reviewer_approval_date: Joi.date().allow(null).optional(),
 })
   .min(1)
   .messages({
