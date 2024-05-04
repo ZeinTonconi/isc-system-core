@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const createGraduationProcessSchema = Joi.object({
-  student_id: Joi.number().integer().required().messages({
+  student_code: Joi.number().integer().required().messages({
     'number.base': 'Student ID must be an integer',
     'any.required': 'Modality ID is required',
   }),

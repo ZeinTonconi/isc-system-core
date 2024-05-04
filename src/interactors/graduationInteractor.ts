@@ -1,6 +1,8 @@
 import createGraduationProcessRequest from '../dtos/createGraduationProcessRequest';
+import NewGraduationProcess from '../dtos/newGraduationProcess';
 import GraduationProcess from '../models/graduationProcess';
 import * as GraduationProcessService from '../services/graduationService';
+import { getStudentByCode } from './studentInteractor';
 
 export const getGraduationProcessById = async (processId: number) => {
   try {
@@ -37,7 +39,18 @@ export const createGraduationProcess = async (
   graduationProcess: createGraduationProcessRequest
 ) => {
   try {
-    return await GraduationProcessService.createGraduationProcess(graduationProcess);
+    const student = await getStudentByCode(graduationProcess.student_code);
+    if (!student) {
+      throw new Error("The provided student doesn't exist");
+    }
+
+    const newGraduationProcess: NewGraduationProcess = {
+      modality_id: graduationProcess.modality_id,
+      period: graduationProcess.period,
+      project_name: graduationProcess.project_name,
+      student_id: student.id,
+    };
+    return await GraduationProcessService.createGraduationProcess(newGraduationProcess);
   } catch (error) {
     console.error('Error in GraduationProcessService.createGraduationProcess:', error);
     throw new Error('Error creating Graduation Process');
