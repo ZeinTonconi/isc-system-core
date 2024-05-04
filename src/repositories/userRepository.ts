@@ -70,7 +70,16 @@ export const getProfessors = async () => {
   try {
     logger.debug('Fetching professors');
     const professors = await db('users as u')
-      .select('u.id', 'u.name as name', 'u.lastname as lastName', 'u.mothername as motherName')
+      .select(
+        'u.id',
+        'u.name as name',
+        'u.lastname as lastName',
+        'u.mothername as motherName',
+        'u.email as email',
+        'u.code as code',
+        'u.phone as phone',
+        'u.degree as degree'
+      )
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
       .where('ur.role_id', UserRole.PROFESSOR.id);
     logger.info('Professors fetched successfully.');
