@@ -2,12 +2,12 @@ import express, { Request, Response, Application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import authRouter from './src/routes/authRoutes';
-import studentRouter from './src/routes/studentRoutes';
-import graduationRouter from './src/routes/graduationRoutes';
-import professorRouter from './src/routes/professorRoutes';
-import modalityRouter from './src/routes/modalityRoutes';
-import adminRouter from './src/routes/adminRoutes';
+import authRouter from './routes/authRoutes';
+import studentRouter from './routes/studentRoutes';
+import graduationRouter from './routes/graduationRoutes';
+import professorRouter from './routes/professorRoutes';
+import modalityRouter from './routes/modalityRoutes';
+import adminRouter from './routes/adminRoutes';
 
 dotenv.config();
 
