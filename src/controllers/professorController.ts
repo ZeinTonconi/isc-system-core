@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import * as ProfessorInteractor from '../interactors/professorInteractor';
 import createUserRequest from '../dtos/createUserRequest';
 import { buildLogger } from '../plugin/logger';
+import { handleError } from '../handlers/errorHandler';
+import { sendCreated, sendSuccess } from '../handlers/successHandler';
 
 const logger = buildLogger('professorController');
 
@@ -15,10 +17,12 @@ export const getProfessorsController = async (req: Request, res: Response) => {
     }
 
     logger.info('Professors retrieved successfully');
-    res.json({ success: true, data: professors, message: 'Professors retrieved successfully' });
+    sendSuccess(res, professors, 'Professors retrieved successfully');
   } catch (error) {
     logger.error(`Error in getProfessorsController: ${error}`);
-    res.status(500).json({ success: false, message: 'Error fetching professors' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -26,10 +30,10 @@ export const createProfessor = async (req: Request, res: Response) => {
   try {
     const studentData: createUserRequest = req.body;
     const newStudent = await ProfessorInteractor.createProfessor(studentData);
-    res
-      .status(201)
-      .json({ success: true, student: newStudent, message: 'Professor created successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err });
+    sendCreated(res, { profesor: newStudent }, 'Professor created successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };

@@ -1,17 +1,20 @@
 import { Request, Response } from 'express';
 import * as StudentInteractor from '../interactors/studentInteractor';
 import createUserRequest from '../dtos/createUserRequest';
+import { handleError } from '../handlers/errorHandler';
+import { sendCreated, sendSuccess } from '../handlers/successHandler';
 
 export const getStudents = async (req: Request, res: Response) => {
   try {
     const students = await StudentInteractor.getStudents();
     if (students.length === 0) {
       res.status(404).json({ success: false, message: 'No students found' });
-    } else {
-      res.json({ success: true, data: students, message: 'Students retrieved successfully' });
     }
-  } catch (err) {
-    res.status(500).json({ success: false, result: null, message: err });
+    sendSuccess(res, students, 'Students retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -19,11 +22,11 @@ export const createStudent = async (req: Request, res: Response) => {
   try {
     const studentData: createUserRequest = req.body;
     const newStudent = await StudentInteractor.createStudent(studentData);
-    res
-      .status(201)
-      .json({ success: true, student: newStudent, message: 'Student created successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err });
+    sendCreated(res, newStudent, 'Student created successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -37,8 +40,10 @@ export const getStudentByCode = async (req: Request, res: Response) => {
         .status(404)
         .json({ success: false, message: 'No student found with the provided code' });
     }
-    res.json({ success: true, data: student, message: 'Student retrieved successfully' });
+    sendSuccess(res, student, 'Student retrieved successfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };

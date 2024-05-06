@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import * as GraduationProcessInteractor from '../interactors/graduationInteractor';
 import createGraduationProcessRequest from '../dtos/createGraduationProcessRequest';
+import { handleError } from '../handlers/errorHandler';
+import { sendCreated, sendSuccess } from '../handlers/successHandler';
 
 export const getGraduationProcessByIdController = async (req: Request, res: Response) => {
   const processId = parseInt(req.params.id);
@@ -10,11 +12,7 @@ export const getGraduationProcessByIdController = async (req: Request, res: Resp
     if (!graduationProcess) {
       return res.status(404).json({ success: false, message: 'Graduation process not found' });
     }
-    res.json({
-      success: true,
-      data: graduationProcess,
-      message: 'Graduation process retrieved successfully',
-    });
+    sendSuccess(res, graduationProcess, 'Graduation process retrieved successfully');
   } catch (error) {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
@@ -32,13 +30,11 @@ export const updateGraduationProcessController = async (req: Request, res: Respo
     if (!updatedGraduationProcess) {
       return res.status(404).json({ success: false, message: 'Graduation process not found' });
     }
-    res.json({
-      success: true,
-      graduationProcess: updatedGraduationProcess,
-      message: 'Graduation process updated successfully',
-    });
+    sendSuccess(res, updatedGraduationProcess, 'Graduation process updated successfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: error });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -48,13 +44,11 @@ export const createGraduationProcessController = async (req: Request, res: Respo
   try {
     const newGraduationProcess =
       await GraduationProcessInteractor.createGraduationProcess(graduationProcess);
-    res.status(201).json({
-      success: true,
-      data: newGraduationProcess,
-      message: 'Graduation process created successfully',
-    });
+    sendCreated(res, newGraduationProcess, 'Graduation process created successfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: error || 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -64,12 +58,10 @@ export const getGraduationProcessesController = async (req: Request, res: Respon
     if (graduationProcesses.length === 0) {
       return res.status(404).json({ success: false, message: 'No graduation processes found' });
     }
-    res.json({
-      success: true,
-      data: graduationProcesses,
-      message: 'Graduation processes retrieved successfully',
-    });
+    sendSuccess(res, graduationProcesses, 'Graduation processes retrieved successfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
