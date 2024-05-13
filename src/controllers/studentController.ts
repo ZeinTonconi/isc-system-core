@@ -7,9 +7,6 @@ import { sendCreated, sendSuccess } from '../handlers/successHandler';
 export const getStudents = async (req: Request, res: Response) => {
   try {
     const students = await StudentInteractor.getStudents();
-    if (students.length === 0) {
-      res.status(404).json({ success: false, message: 'No students found' });
-    }
     sendSuccess(res, students, 'Students retrieved successfully');
   } catch (error) {
     if (error instanceof Error) {
@@ -35,11 +32,6 @@ export const getStudentByCode = async (req: Request, res: Response) => {
 
   try {
     const student = await StudentInteractor.getStudentByCode(userCode);
-    if (!student) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'No student found with the provided code' });
-    }
     sendSuccess(res, student, 'Student retrieved successfully');
   } catch (error) {
     if (error instanceof Error) {

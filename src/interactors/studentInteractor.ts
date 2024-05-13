@@ -2,31 +2,27 @@ import * as StudentService from '../services/studentService';
 import * as UserService from '../services/userService';
 import * as UserRoleService from '../services/userRoleService';
 import createUserRequest from '../dtos/createUserRequest';
+import { NotFoundError } from '../errors/notFoundError';
 
 const studentRole = 1;
 
 export const getStudents = async () => {
-  try {
-    const students = await StudentService.getStudents();
+  const students = await StudentService.getStudents();
 
-    if (students.length === 0) {
-      return 'There are no students';
-    }
-
-    return students;
-  } catch (error) {
-    console.error('Error fetching students:', error);
-    throw new Error('Error fetching students');
+  if (!students) {
+    throw new NotFoundError('There are no students');
   }
+
+  return students;
 };
 
 export const getStudentByCode = async (studentCode: number) => {
-  try {
-    return await StudentService.getStudentByCode(studentCode);
-  } catch (error) {
-    console.error('Error fetching students:', error);
-    throw new Error('Error fetching students');
+  const student = await StudentService.getStudentByCode(studentCode);
+
+  if (!student) {
+    throw new NotFoundError('There is not student with the provide code');
   }
+  return student;
 };
 
 export const createStudent = async (studentData: createUserRequest) => {
