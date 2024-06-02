@@ -8,6 +8,7 @@ import graduationRouter from './routes/graduationRoutes';
 import professorRouter from './routes/professorRoutes';
 import modalityRouter from './routes/modalityRoutes';
 import adminRouter from './routes/adminRoutes';
+import statsRouter from './routes/statsRoutes';
 
 dotenv.config();
 
@@ -26,5 +27,6 @@ app.use('/api/graduation', graduationRouter);
 app.use('/api/professor', professorRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/modality', modalityRouter);
+app.use('/api/stats', statsRouter);
 
 export default app;

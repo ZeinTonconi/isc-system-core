@@ -16,4 +16,6 @@ router
   .route('/by-code/:code')
   .get(checkUserAuth, validateParams(studentCodeSchema), StudentController.getStudentByCode);
 
+router.route('/:id').delete(checkUserAuth, StudentController.deleteStudent);
+
 export default router;

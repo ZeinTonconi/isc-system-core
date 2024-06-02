@@ -21,6 +21,7 @@ export const createGraduationProcess = async (graduationProcess: NewGraduationPr
     tutor_approval: false,
     reviewer_letter: false,
     reviewer_approval: false,
+    stage_id: 1,
   };
   console.log(newGraduationProcess);
 

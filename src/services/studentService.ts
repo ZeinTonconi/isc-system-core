@@ -8,3 +8,7 @@ export const getStudents = async (): Promise<Student[]> => {
 export const getStudentByCode = async (userCode: number): Promise<Student | null> => {
   return UserRepository.getStudentByCode(userCode);
 };
+
+export const getStudentById = async (studentId: number): Promise<Student | null> => {
+  return UserRepository.getUserById(studentId);
+};

@@ -28,9 +28,9 @@ export const getProfessorsController = async (req: Request, res: Response) => {
 
 export const createProfessor = async (req: Request, res: Response) => {
   try {
-    const studentData: createUserRequest = req.body;
-    const newStudent = await ProfessorInteractor.createProfessor(studentData);
-    sendCreated(res, { profesor: newStudent }, 'Professor created successfully');
+    const professorData: createUserRequest = req.body;
+    const newProfessor = await ProfessorInteractor.createProfessor(professorData);
+    sendCreated(res, { profesor: newProfessor }, 'Professor created successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);

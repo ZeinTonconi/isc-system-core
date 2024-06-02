@@ -24,7 +24,13 @@ export const getUserByEmail = async (email: string) => {
 export const getStudents = async () => {
   try {
     const students = await db('users as u')
-      .select('u.id', 'u.name as name', 'u.lastname as lastName', 'u.mothername as motherName')
+      .select(
+        'u.id',
+        'u.code',
+        db.raw("CONCAT(u.name, ' ', u.lastname, ' ', u.mothername) as name"),
+        'u.email',
+        'u.phone'
+      )
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
       .where('ur.role_id', UserRole.STUDENT.id);
     return students;
@@ -78,15 +84,40 @@ export const getProfessors = async () => {
         'u.email as email',
         'u.code as code',
         'u.phone as phone',
-        'u.degree as degree'
+        'u.degree as degree',
+        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.tutor_id = u.id) AS tutoring_count'),
+        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.reviewer_id = u.id) AS review_count')
       )
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
-      .where('ur.role_id', UserRole.PROFESSOR.id);
+      .leftJoin('graduation_process as gp', function () {
+        this.on('gp.tutor_id', '=', 'u.id').orOn('gp.reviewer_id', '=', 'u.id');
+      })
+      .where('ur.role_id', UserRole.PROFESSOR.id)
+      .groupBy('u.id');
     logger.info('Professors fetched successfully.');
     logger.debug(`Fetched professors: ${JSON.stringify(professors)}`);
     return professors;
   } catch (error) {
     logger.error(`Error fetching professors: ${error}`);
     throw Error('Error');
+  }
+};
+
+export const getUserById = async (userId: number) => {
+  try {
+    const user = await db('users').where('id', userId).first();
+    return user;
+  } catch (error) {
+    console.error('Error fetching user by id:', error);
+    throw error;
+  }
+};
+
+export const deleteUser = async (userId: number) => {
+  try {
+    await db('users').where('id', userId).delete();
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
   }
 };

@@ -39,3 +39,16 @@ export const getStudentByCode = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const deleteStudent = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+
+  try {
+    await StudentInteractor.deleteStudent(userId);
+    sendSuccess(res, null, 'Student deleted successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};

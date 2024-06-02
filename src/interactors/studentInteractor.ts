@@ -44,3 +44,18 @@ export const createStudent = async (studentData: createUserRequest) => {
     throw new Error('Error creating the student');
   }
 };
+
+export const deleteStudent = async (studentId: number) => {
+  try {
+    const student = await StudentService.getStudentById(studentId);
+
+    if (!student) {
+      throw new NotFoundError('Student not found');
+    }
+
+    await UserService.deleteUser(studentId);
+  } catch (error) {
+    console.error('Error deleting student:', error);
+    throw new Error('Error deleting student');
+  }
+};
