@@ -16,6 +16,9 @@ const updateGraduationProcessSchema = Joi.object({
     'date.base': 'Date of seminar enrollment must be a valid date or null',
   }),
   reviewer_approval: Joi.boolean().optional(),
+  reviewer_id: Joi.number().integer().optional().messages({
+    'number.base': 'Reviewer ID must be an integer',
+  }),
   reviewer_letter: Joi.boolean().optional(),
   seminar_enrollment: Joi.boolean().optional(),
   stage_id: Joi.number().integer().optional().messages({
