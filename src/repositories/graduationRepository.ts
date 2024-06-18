@@ -7,8 +7,8 @@ export const getGraduationProcessById = async (id: number) => {
   try {
     const graduationProcess = await db(`${tableName} as gp`)
       .join('users as student', 'gp.student_id', 'student.id')
-      .join('users as tutor', 'gp.tutor_id', 'tutor.id')
-      .join('users as reviewer', 'gp.reviewer_id', 'reviewer.id')
+      .leftJoin('users as tutor', 'gp.tutor_id', 'tutor.id')
+      .leftJoin('users as reviewer', 'gp.reviewer_id', 'reviewer.id')
       .join('modalities', 'gp.modality_id', 'modalities.id')
       .select(
         'student.name as student_name',
@@ -26,7 +26,10 @@ export const getGraduationProcessById = async (id: number) => {
   }
 };
 
-export const updateGraduationProcess = async (id: number, updatedData: GraduationProcess) => {
+export const updateGraduationProcess = async (
+  id: number,
+  updatedData: Partial<GraduationProcess>
+) => {
   try {
     const updatedRows = await db(tableName).where({ id }).update(updatedData);
     if (updatedRows === 0) {
@@ -36,5 +39,37 @@ export const updateGraduationProcess = async (id: number, updatedData: Graduatio
   } catch (error) {
     console.error('Error in GraduationProcessRepository.updateGraduationProcess:', error);
     throw new Error('Error updating Graduation Process');
+  }
+};
+
+export const createGraduationProcess = async (data: GraduationProcess) => {
+  try {
+    const [newGraduationProcess] = await db(tableName).insert(data).returning('*');
+    return newGraduationProcess;
+  } catch (error) {
+    console.error('Error in GraduationProcessRepository.createGraduationProcess:', error);
+    throw new Error('Error creating Graduation Process');
+  }
+};
+
+export const getGraduationProcesses = async () => {
+  try {
+    const students = await db('graduation_process as gp')
+      .select(
+        'u.name as student_name',
+        'm.name as modality',
+        'tutor.name as tutor_name',
+        'reviewer.name as reviewer_name',
+        'gp.period as period',
+        'gp.id'
+      )
+      .join('users as u', 'u.id', '=', 'gp.student_id')
+      .join('modalities as m', 'm.id', '=', 'gp.modality_id')
+      .leftJoin('users as tutor', 'tutor.id', '=', 'gp.tutor_id')
+      .leftJoin('users as reviewer', 'reviewer.id', '=', 'gp.reviewer_id');
+    return students;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

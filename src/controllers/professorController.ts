@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
-import * as ProfessorService from '../interactors/professorInteractor';
-import logger from '../utils/logger';
+import * as ProfessorInteractor from '../interactors/professorInteractor';
+import createUserRequest from '../dtos/createUserRequest';
+import { buildLogger } from '../plugin/logger';
+import { handleError } from '../handlers/errorHandler';
+import { sendCreated, sendSuccess } from '../handlers/successHandler';
+
+const logger = buildLogger('professorController');
 
 export const getProfessorsController = async (req: Request, res: Response) => {
   try {
-    const professors = await ProfessorService.getProfessors();
+    const professors = await ProfessorInteractor.getProfessors();
 
     if (professors.length === 0) {
       logger.info('No professors found');
@@ -12,9 +17,23 @@ export const getProfessorsController = async (req: Request, res: Response) => {
     }
 
     logger.info('Professors retrieved successfully');
-    res.json({ success: true, data: professors, message: 'Professors retrieved successfully' });
+    sendSuccess(res, professors, 'Professors retrieved successfully');
   } catch (error) {
     logger.error(`Error in getProfessorsController: ${error}`);
-    res.status(500).json({ success: false, message: 'Error fetching professors' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const createProfessor = async (req: Request, res: Response) => {
+  try {
+    const professorData: createUserRequest = req.body;
+    const newProfessor = await ProfessorInteractor.createProfessor(professorData);
+    sendCreated(res, { profesor: newProfessor }, 'Professor created successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };

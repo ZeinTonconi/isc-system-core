@@ -1,7 +1,7 @@
-enum UserRole {
-  STUDENT = 1,
-  PROFESSOR = 2,
-  ADMIN = 3,
-}
+const UserRole = {
+  STUDENT: { id: 1, name: 'student' },
+  PROFESSOR: { id: 2, name: 'professor' },
+  ADMIN: { id: 3, name: 'admin' },
+};
 
 export default UserRole;

@@ -1,20 +1,42 @@
 import * as UserService from '../services/userService';
-import logger from '../utils/logger';
+import * as UserRoleService from '../services/userRoleService';
+import { buildLogger } from '../plugin/logger';
+import createUserRequest from '../dtos/createUserRequest';
+import { NotFoundError } from '../errors/notFoundError';
+
+const logger = buildLogger('professorInteractor');
+
+const professorRole = 2;
 
 export const getProfessors = async () => {
-  try {
-    logger.debug('Fetching professors');
-    const professors = await UserService.getProfessors();
+  logger.debug('Fetching professors');
+  const professors = await UserService.getProfessors();
 
-    if (professors.length === 0) {
-      logger.info('No professors found');
-      return 'There are no professors';
+  if (!professors) {
+    logger.info('No professors found');
+    throw new NotFoundError('There are no professors');
+  }
+
+  logger.info('Professors fetched successfully');
+  return professors;
+};
+
+export const createProfessor = async (professorData: createUserRequest) => {
+  try {
+    const newProfessor = await UserService.createUser(professorData);
+
+    if (!newProfessor) {
+      throw new Error('Error creating the professor');
     }
 
-    logger.info('Professors fetched successfully');
-    return professors;
+    const { id } = newProfessor;
+    const userRole = await UserRoleService.createUserRole(id, professorRole);
+    if (!userRole) {
+      throw new Error('Error creating the Professor Role');
+    }
+    return newProfessor;
   } catch (error) {
-    logger.error(`Error fetching professors: ${error}`);
-    throw new Error('Error fetching professors');
+    console.error('Error in createProfessor interactor:', error);
+    throw new Error('Error creating the professor');
   }
 };

@@ -1,34 +1,38 @@
 import UserRole from '../constants/roles';
 import User from '../models/userInterface';
-import logger from '../utils/logger';
+import { buildLogger } from '../plugin/logger';
 import db from './pg-connection';
+
+const logger = buildLogger('userRepository');
 
 export const getUserByEmail = async (email: string) => {
   try {
-    const user = await db('users').where({ email }).first();
+    const user = await db('users as u')
+      .leftJoin('user_roles as ur', 'ur.user_id', 'u.id')
+      .leftJoin('roles as r', 'r.id', 'ur.role_id')
+      .where('u.email', email)
+      .first('u.*', db.raw('array_agg(r.name) as roles'))
+      .groupBy('u.id');
+
     return user;
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching user by email:', error);
     throw error;
   }
 };
 
 export const getStudents = async () => {
   try {
-    const students = await db('graduation_process as gp')
+    const students = await db('users as u')
       .select(
-        'u.name as student_name',
-        'm.name as modality',
-        'tutor.name as tutor_name',
-        'reviewer.name as reviewer_name',
-        'gp.period as period',
-        'gp.id'
+        'u.id',
+        'u.code',
+        db.raw("CONCAT(u.name, ' ', u.lastname, ' ', u.mothername) as name"),
+        'u.email',
+        'u.phone'
       )
-      .join('users as u', 'u.id', '=', 'gp.student_id')
-      .join('modalities as m', 'm.id', '=', 'gp.modality_id')
-      .join('users as tutor', 'tutor.id', '=', 'gp.tutor_id')
-      .join('users as reviewer', 'reviewer.id', '=', 'gp.reviewer_id');
-    console.log('🚀 ~ file: userRepository.ts:16 ~ getStudents ~ students:', students);
+      .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
+      .where('ur.role_id', UserRole.STUDENT.id);
     return students;
   } catch (error) {
     console.error(error);
@@ -36,10 +40,31 @@ export const getStudents = async () => {
   }
 };
 
+export const getStudentByCode = async (userCode: number) => {
+  try {
+    const student = await db('users as u')
+      .select(
+        'u.id',
+        'u.name as student_name',
+        'u.lastname as lastName',
+        'u.mothername as motherName',
+        'u.code'
+      )
+      .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
+      .where('ur.role_id', UserRole.STUDENT.id)
+      .andWhere('u.code', userCode)
+      .first();
+
+    return student || null;
+  } catch (error) {
+    console.error('Error in getStudentByCode:', error);
+    throw new Error('Error fetching student by code');
+  }
+};
+
 export const createUser = async (userData: User) => {
   try {
-    const [newUserId] = await db('users').insert(userData).returning('id');
-    const newUser = await db('students').where({ id: newUserId }).first();
+    const [newUser] = await db('users').insert(userData).returning('id');
     return newUser;
   } catch (error) {
     console.error(error);
@@ -51,14 +76,48 @@ export const getProfessors = async () => {
   try {
     logger.debug('Fetching professors');
     const professors = await db('users as u')
-      .select('u.id', 'u.name as name', 'u.lastname as lastName', 'u.mothername as motherName')
+      .select(
+        'u.id',
+        'u.name as name',
+        'u.lastname as lastName',
+        'u.mothername as motherName',
+        'u.email as email',
+        'u.code as code',
+        'u.phone as phone',
+        'u.degree as degree',
+        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.tutor_id = u.id) AS tutoring_count'),
+        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.reviewer_id = u.id) AS review_count')
+      )
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
-      .where('ur.role_id', UserRole.PROFESSOR);
+      .leftJoin('graduation_process as gp', function () {
+        this.on('gp.tutor_id', '=', 'u.id').orOn('gp.reviewer_id', '=', 'u.id');
+      })
+      .where('ur.role_id', UserRole.PROFESSOR.id)
+      .groupBy('u.id');
     logger.info('Professors fetched successfully.');
     logger.debug(`Fetched professors: ${JSON.stringify(professors)}`);
     return professors;
   } catch (error) {
     logger.error(`Error fetching professors: ${error}`);
     throw Error('Error');
+  }
+};
+
+export const getUserById = async (userId: number) => {
+  try {
+    const user = await db('users').where('id', userId).first();
+    return user;
+  } catch (error) {
+    console.error('Error fetching user by id:', error);
+    throw error;
+  }
+};
+
+export const deleteUser = async (userId: number) => {
+  try {
+    await db('users').where('id', userId).delete();
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
   }
 };
