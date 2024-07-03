@@ -1,4 +1,5 @@
 import NewGraduationProcess from '../dtos/newGraduationProcess';
+import { DefenseDetail } from '../models/defenseDetail';
 import GraduationProcess from '../models/graduationProcess';
 import * as GraduationProcessRepository from '../repositories/graduationRepository';
 
@@ -30,4 +31,16 @@ export const createGraduationProcess = async (graduationProcess: NewGraduationPr
 
 export const getGraduationProcesses = async (): Promise<GraduationProcess[]> => {
   return GraduationProcessRepository.getGraduationProcesses();
+};
+
+export const createDefense = async (processId: number, defenseData: DefenseDetail) => {
+  return GraduationProcessRepository.createDefense(processId, defenseData);
+};
+
+export const updateDefense = async (defenseId: number, updatedData: Partial<DefenseDetail>) => {
+  return GraduationProcessRepository.updateDefense(defenseId, updatedData);
+};
+
+export const getDefense = async (processId: number, type: string) => {
+  return GraduationProcessRepository.getDefense(processId, type);
 };

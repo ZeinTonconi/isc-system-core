@@ -10,7 +10,8 @@ const config = {
     port: parseInt(process.env.SERVER_PORT || '', 10) || DEFAULT_SERVER_PORT,
   },
   database: {
-    host: process.env.DB_HOST || 'localhost:5467',
+    host:
+      process.env.DB_HOST || 'ep-calm-bird-74128633-pooler.us-east-1.postgres.vercel-storage.com',
     name: process.env.DB_NAME || 'verceldb',
     user: process.env.DB_USER || 'default',
     password: process.env.DB_PASSWORD || 'mGpl4xbjP6MB',

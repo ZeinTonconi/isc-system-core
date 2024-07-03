@@ -62,3 +62,44 @@ export const getGraduationProcessesController = async (req: Request, res: Respon
     }
   }
 };
+
+export const createDefenseController = async (req: Request, res: Response) => {
+  const processId = parseInt(req.params.id);
+  const defenseData = req.body;
+
+  try {
+    const defense = await GraduationProcessInteractor.createDefense(processId, defenseData);
+    sendCreated(res, defense, 'Defense created successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const updateDefenseController = async (req: Request, res: Response) => {
+  const processId = parseInt(req.params.id);
+  const updatedData = req.body;
+
+  try {
+    const defense = await GraduationProcessInteractor.updateDefense(processId, updatedData);
+    sendSuccess(res, defense, 'Defense updated successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const getDefenseController = async (req: Request, res: Response) => {
+  const processId = parseInt(req.params.id);
+  const type = req.query.type as string;
+  try {
+    const defense = await GraduationProcessInteractor.getDefense(processId, type);
+    sendSuccess(res, defense, 'Defense retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
