@@ -2,6 +2,7 @@ import createGraduationProcessRequest from '../dtos/createGraduationProcessReque
 import NewGraduationProcess from '../dtos/newGraduationProcess';
 import { BadRequestError } from '../errors/badRequestError';
 import { NotFoundError } from '../errors/notFoundError';
+import { DefenseDetail } from '../models/defenseDetail';
 import GraduationProcess from '../models/graduationProcess';
 import * as GraduationProcessService from '../services/graduationService';
 import { getStudentByCode } from './studentInteractor';
@@ -55,4 +56,16 @@ export const getGraduationProcesses = async () => {
     throw new NotFoundError('No graduation processes found');
   }
   return graduationProcesses;
+};
+
+export const createDefense = async (processId: number, defenseData: DefenseDetail) => {
+  return await GraduationProcessService.createDefense(processId, defenseData);
+};
+
+export const updateDefense = async (processId: number, updatedData: Partial<DefenseDetail>) => {
+  return await GraduationProcessService.updateDefense(processId, updatedData);
+};
+
+export const getDefense = async (processId: number, type: string) => {
+  return await GraduationProcessService.getDefense(processId, type);
 };

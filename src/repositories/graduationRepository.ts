@@ -1,3 +1,4 @@
+import { DefenseDetail } from '../models/defenseDetail';
 import GraduationProcess from '../models/graduationProcess';
 import db from './pg-connection';
 
@@ -71,5 +72,42 @@ export const getGraduationProcesses = async () => {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+export const createDefense = async (processId: number, defenseData: DefenseDetail) => {
+  try {
+    const defense = await db('defense_details as dd')
+      .insert({ ...defenseData, graduation_process_id: processId })
+      .returning('*');
+    return defense;
+  } catch (error) {
+    console.error('Error in GraduationProcessRepository.createDefense:', error);
+    throw new Error('Error creating defense');
+  }
+};
+
+export const updateDefense = async (defenseId: number, updatedData: Partial<DefenseDetail>) => {
+  try {
+    const updatedRows = await db('defense_details').where({ id: defenseId }).update(updatedData);
+    if (updatedRows === 0) {
+      throw new Error('Defense not found or no change made');
+    }
+    return await db('defenseDetail').where({ id: defenseId }).first();
+  } catch (error) {
+    console.error('Error in GraduationProcessRepository.updateDefense:', error);
+    throw new Error('Error updating defense');
+  }
+};
+
+export const getDefense = async (processId: number, type: string) => {
+  try {
+    const defense = await db('defense_details')
+      .where({ graduation_process_id: processId, type: type })
+      .first();
+    return defense;
+  } catch (error) {
+    console.error('Error in GraduationProcessRepository.getDefense:', error);
+    throw new Error('Error fetching defense');
   }
 };
