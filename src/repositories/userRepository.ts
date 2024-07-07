@@ -1,4 +1,5 @@
 import UserRole from '../constants/roles';
+import createUserRequest from '../dtos/createUserRequest';
 import User from '../models/userInterface';
 import { buildLogger } from '../plugin/logger';
 import db from './pg-connection';
@@ -89,7 +90,7 @@ export const getProfessors = async () => {
         db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.reviewer_id = u.id) AS review_count')
       )
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
-      .leftJoin('graduation_process as gp', function () {
+      .leftJoin('graduation_process as gp', function (this: any) {
         this.on('gp.tutor_id', '=', 'u.id').orOn('gp.reviewer_id', '=', 'u.id');
       })
       .where('ur.role_id', UserRole.PROFESSOR.id)
@@ -118,6 +119,22 @@ export const deleteUser = async (userId: number) => {
     await db('users').where('id', userId).delete();
   } catch (error) {
     console.error('Error deleting user:', error);
+    throw error;
+  }
+};
+
+/**
+ * Update user data
+ * @param userId User id
+ * @param userData User data
+ * @returns Updated user data
+ */
+export const updateUser = async (userId: number, userData: User | createUserRequest) => {
+  try {
+    await db('users').where('id', userId).update(userData);
+    return userData;
+  } catch (error) {
+    console.error('Error updating user:', error);
     throw error;
   }
 };

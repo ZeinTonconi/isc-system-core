@@ -73,3 +73,19 @@ export const getStudent = async (studentId: number) => {
     throw new Error('Error getting student');
   }
 };
+
+export const updateStudent = async (studentId: number, studentData: createUserRequest) => {
+  try {
+    const student = await StudentService.getStudentById(studentId);
+
+    if (!student) {
+      throw new NotFoundError('Student not found');
+    }
+
+    const updatedStudent = await StudentService.updateUser(studentId, studentData);
+    return updatedStudent;
+  } catch (error) {
+    console.error('Error updating student:', error);
+    throw new Error('Error updating student');
+  }
+};

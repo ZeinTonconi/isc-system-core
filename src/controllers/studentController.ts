@@ -64,3 +64,17 @@ export const getStudent = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const updateStudent = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+  const studentData: createUserRequest = req.body;
+
+  try {
+    const student = await StudentInteractor.updateStudent(userId, studentData);
+    sendSuccess(res, student, 'Student updated successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
