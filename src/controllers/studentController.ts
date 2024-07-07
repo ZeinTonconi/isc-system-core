@@ -52,3 +52,15 @@ export const deleteStudent = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const getStudent = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+  try {
+    const student = await StudentInteractor.getStudent(userId);
+    sendSuccess(res, student, 'Student retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};

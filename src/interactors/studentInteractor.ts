@@ -59,3 +59,17 @@ export const deleteStudent = async (studentId: number) => {
     throw new Error('Error deleting student');
   }
 };
+
+export const getStudent = async (studentId: number) => {
+  try {
+    const student = await StudentService.getStudentById(studentId);
+
+    if (!student) {
+      throw new NotFoundError('Student not found');
+    }
+    return student;
+  } catch (error) {
+    console.error('Error getting student:', error);
+    throw new Error('Error getting student');
+  }
+};

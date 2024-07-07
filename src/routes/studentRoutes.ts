@@ -18,4 +18,6 @@ router
 
 router.route('/:id').delete(checkUserAuth, StudentController.deleteStudent);
 
+router.route('/:id').get(checkUserAuth, StudentController.getStudent);
+
 export default router;
