@@ -27,6 +27,18 @@ export const getStudentByCode = async (studentCode: number) => {
 
 export const createStudent = async (studentData: createUserRequest) => {
   try {
+
+
+    const existingUser = await StudentService.getStudentByEmail(studentData.email);
+    if (existingUser) {
+      throw new Error('Estudiante con este email ya existe.');
+    }
+
+    const existingUserWithCode = await StudentService.getStudentByCode(Number(studentData.code));
+    if (existingUserWithCode) {
+      throw new Error('Estudiante con este código ya existe.');
+    }
+
     const newStudent = await UserService.createUser(studentData);
 
     if (!newStudent) {
@@ -41,7 +53,7 @@ export const createStudent = async (studentData: createUserRequest) => {
     return newStudent;
   } catch (error) {
     console.error('Error in createStudent interactor:', error);
-    throw new Error('Error creating the student');
+    throw new Error((error as Error).message);
   }
 };
 
@@ -56,7 +68,7 @@ export const deleteStudent = async (studentId: number) => {
     await UserService.deleteUser(studentId);
   } catch (error) {
     console.error('Error deleting student:', error);
-    throw new Error('Error deleting student');
+    throw new Error((error as Error).message);
   }
 };
 

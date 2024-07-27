@@ -15,6 +15,15 @@ export const findByEmail = async (email: string): Promise<User> => {
 export const createUser = async (user: createUserRequest) => {
   try {
     // TODO: valid the user does not exist with the email or code
+    const existingUser = await UserRepository.getUserByEmail(user.email);
+    if (existingUser) {
+      throw new Error('User with this email already exists');
+    }
+
+    const existingUserWithCode = await UserRepository.getStudentByCode(Number(user.code));
+    if (existingUserWithCode) {
+      throw new Error('User with this code already exists');
+    }
     logger.debug('Attempting to create a new User');
     const hashedPassword = await AuthenticationService.hashPassword(defaultUserPassword);
     return await UserRepository.createUser({

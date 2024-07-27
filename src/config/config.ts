@@ -21,6 +21,11 @@ const config = {
   },
   allowedOrigins: [],
   defaultUserPassword: process.env.DEFAULT_USER_PASSWORD || '123456',
+  mailer: {
+    emailService: process.env.EMAIL_SERVICE,
+    emailUser: process.env.EMAIL_USER,
+    emailPass: process.env.EMAIL_PASS
+  }
 };
 
 export default config;

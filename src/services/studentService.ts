@@ -10,6 +10,10 @@ export const getStudentByCode = async (userCode: number): Promise<Student | null
   return UserRepository.getStudentByCode(userCode);
 };
 
+export const getStudentByEmail = async (email: string): Promise<Student | null> => {
+  return UserRepository.getUserByEmail(email);
+}
+
 export const getStudentById = async (studentId: number): Promise<Student | null> => {
   return UserRepository.getUserById(studentId);
 };
