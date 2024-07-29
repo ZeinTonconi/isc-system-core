@@ -10,12 +10,6 @@ node_modules/
 # Ignore any local configuration files
 config/*.local.ts
 
-# Ignore log files
-logs/
-
-# Ignore any generated files
-*.log
-
 # Ignore VSCode settings
 .vscode/
 
