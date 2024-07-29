@@ -1,11 +1,8 @@
 import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
 
 interface LogMetadata {
   [key: string]: string | number | boolean | Date | LogMetadata;
 }
-
-const logsDirectory = './logs';
 
 const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -17,14 +14,6 @@ const logFormat = winston.format.combine(
   winston.format.colorize({ all: true })
 );
 
-const dailyRotateFileTransport = new DailyRotateFile({
-  filename: `${logsDirectory}/application-%DATE%.log`,
-  datePattern: 'YYYY-MM-DD',
-  zippedArchive: true,
-  maxSize: '20m',
-  maxFiles: '14d',
-});
-
 const logger = winston.createLogger({
   level: 'info',
   format: logFormat,
@@ -33,7 +22,6 @@ const logger = winston.createLogger({
       level: 'debug',
       format: winston.format.combine(winston.format.colorize(), logFormat),
     }),
-    dailyRotateFileTransport,
   ],
 });
 
