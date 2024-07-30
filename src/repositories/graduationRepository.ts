@@ -12,9 +12,18 @@ export const getGraduationProcessById = async (id: number) => {
       .leftJoin('users as reviewer', 'gp.reviewer_id', 'reviewer.id')
       .join('modalities', 'gp.modality_id', 'modalities.id')
       .select(
+        db.raw(
+          "CONCAT(student.name, ' ', student.lastname, ' ', student.mothername) as student_fullname"
+        ),
+        db.raw("CONCAT(tutor.name, ' ', tutor.lastname, ' ', tutor.mothername) as tutor_fullname"),
+        db.raw(
+          "CONCAT(reviewer.name, ' ', reviewer.lastname, ' ', reviewer.mothername) as reviewer_fullname"
+        ),
         'student.name as student_name',
         'tutor.name as tutor_name',
+        'tutor.degree as tutor_degree',
         'reviewer.name as reviewer_name',
+        'reviewer.degree as reviewer_degree',
         'modalities.name as modality_name',
         'gp.*'
       )

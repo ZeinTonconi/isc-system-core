@@ -87,7 +87,8 @@ export const getProfessors = async () => {
         'u.phone as phone',
         'u.degree as degree',
         db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.tutor_id = u.id) AS tutoring_count'),
-        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.reviewer_id = u.id) AS review_count')
+        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.reviewer_id = u.id) AS review_count'),
+        db.raw("CONCAT(u.name, ' ', u.lastname, ' ', u.mothername) as fullname")
       )
       .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
       .leftJoin('graduation_process as gp', function (this: any) {
