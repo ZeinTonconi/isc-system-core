@@ -1,9 +1,10 @@
 import { Dayjs } from "dayjs";
 
 interface EventInterns {
-  id_intern: number;
   id_event: number;
-  type: string;
+  id_intern: number;
+  status: string;
+  is_reserve: boolean;
   created_at: Dayjs;
   updated_at: Dayjs;
 }
