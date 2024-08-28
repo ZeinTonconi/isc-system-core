@@ -2,10 +2,7 @@ import config from './config/config';
 
 const { database } = config;
 
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
-module.exports = {
+const knexConfig: { [key: string]: import('knex').Knex.Config } = {
   development: {
     client: 'postgresql',
     connection: {
@@ -13,15 +10,14 @@ module.exports = {
       database: database.name,
       user: database.user,
       password: database.password,
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      port: Number(database.port as string) || 5432,
+      ssl: false,
     },
     migrations: {
-      directory: '../data/migrations',
+      directory: './data/migrations',
     },
     seeds: {
-      directory: '../data/seeds',
+      directory: './data/seeds',
     },
   },
 
@@ -65,3 +61,5 @@ module.exports = {
     },
   },
 };
+
+export default knexConfig;
