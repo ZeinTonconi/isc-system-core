@@ -13,3 +13,12 @@ export const assignUserRole = async (userId: number, userRoleId: number) => {
     throw new Error('Error assigning student role');
   }
 };
+
+export const deleteUserRole = async (userId: number) => {
+  try {
+    return await db(tableName).where('user_id', userId).delete();
+  } catch (error) {
+    console.error('Error deleting user role:', error);
+    throw error;
+  }
+};
