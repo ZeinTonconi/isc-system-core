@@ -8,7 +8,10 @@ const logger = buildLogger('userRepository');
 
 export const getUserByEmail = async (email: string) => {
   try {
-    const user = await db('user_profile as u').where('u.email', email).first('u.*');
+    const user = await db('user_profile as u')
+      .where('u.email', email)
+      .join('roles as r', 'u.role_id', '=', 'r.id')
+      .first('u.*', 'r.name as role_name');
     return user;
   } catch (error) {
     console.error('Error fetching user by email:', error);
