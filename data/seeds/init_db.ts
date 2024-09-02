@@ -4,12 +4,15 @@ const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
 const professorTable = 'professors';
 const permissionsTable = 'permissions' 
+const permissionCategoriesTable = 'permission_categories';
+
 exports.seed = async function (knex: Knex) {
   // Deletes ALL existing entries
   await knex(rolesTable).del();
   await knex(userProfileTable).del();
   await knex(professorTable).del();
   await knex(permissionsTable).del();
+  await knex(permissionCategoriesTable).del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
