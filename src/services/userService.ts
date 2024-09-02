@@ -59,3 +59,7 @@ export const deleteUser = async (userId: number) => {
     throw new Error('Error deleting user');
   }
 };
+
+export const getUserById = async (userId: number): Promise<User | null> => {
+  return UserRepository.getUserById(userId);
+};
