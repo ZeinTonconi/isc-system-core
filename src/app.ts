@@ -15,6 +15,7 @@ import permissionRouter from './routes/permissionRouters';
 import eventsRouter from './routes/eventsRoutes';
 import userRouter from './routes/userRoutes';
 import rolesRouter from './routes/rolesRoutes';
+import internsRouter from './routes/internsRoutes'
 
 dotenv.config();
 
@@ -40,5 +41,5 @@ app.use('/api/user', userRouter);
 app.use('/api/roles', rolesRouter);
 app.use('/api/events', eventInternsRouter)
 app.use('/api/events', eventsRouter);
-
+app.use('/api/interns',internsRouter)
 export default app;
