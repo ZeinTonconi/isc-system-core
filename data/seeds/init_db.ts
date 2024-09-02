@@ -2,10 +2,13 @@ import { Knex } from 'knex';
 // SOLO SE DEBE CORRER EN DEV o QA
 const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
+const permissionsTable = 'permissions' 
+
 exports.seed = async function (knex: Knex) {
   // Deletes ALL existing entries
   await knex(rolesTable).del();
   await knex(userProfileTable).del();
+  await knex(permissionsTable).del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
@@ -26,6 +29,31 @@ exports.seed = async function (knex: Knex) {
       role_id: 1,
     },
   ]);
+  await knex(permissionsTable).insert([
+    { id:1, name:'Ver el dashboard', category_id:'1'},
+    { id:2, name:'Ver reporte de los procesos de graduación', category_id:'2'},
+    { id:3, name:'Crear proceso de graduación', category_id:'2'},
+    { id:4, name:'Ver proceso de graduación por estudiantes', category_id:'2'},
+    { id:5, name:'Asignar proceso de graduación', category_id:'2'},
+    { id:6, name:'Ver lista de docentes', category_id:'3'},
+    { id:7, name:'Agregar docente', category_id:'3'},
+    { id:8, name:'Ver reporte de docente', category_id:'3'},
+    { id:9, name:'Realizar una cita con docente', category_id:'3'},
+    { id:10, name:'Eliminar docente', category_id:'3'},
+    { id:11, name:'Editar información de docente', category_id:'3'},
+    { id:12, name:'Ver lista de estudiantes', category_id:'4'},
+    { id:13, name:'Agregar estudiante', category_id:'4'},
+    { id:14, name:'Eliminar estudiante', category_id:'4'},
+    { id:15, name:'Editar información de estudiante', category_id:'4'},
+    { id:16, name:'Ver reporte de estudiante', category_id:'4'},
+    { id:17, name:'Realizar cita con estudiante', category_id:'4'},
+    { id:18, name:'Ver lista de usuarios', category_id:'5'},
+    { id:19, name:'Ver reporte de usuarios', category_id:'5'},
+    { id:20, name:'Eliminar usuario', category_id:'5'},
+    { id:21, name:'Editar información de usuario', category_id:'5'},
+    { id:22, name:'Agregar usuario', category_id:'5'},
+
+  ])
 
   // return knex('stages')
   //   .del()
