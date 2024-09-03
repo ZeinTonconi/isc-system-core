@@ -3,6 +3,7 @@ import { Knex } from 'knex';
 const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
 const professorTable = 'professors';
+const permissionCategoriesTable = 'permission_categories';
 const permissionsTable = 'permissions' 
 const permissionCategoriesTable = 'permission_categories';
 
@@ -11,6 +12,7 @@ exports.seed = async function (knex: Knex) {
   await knex(rolesTable).del();
   await knex(userProfileTable).del();
   await knex(professorTable).del();
+  await knex(permissionCategoriesTable).del();
   await knex(permissionsTable).del();
   await knex(permissionCategoriesTable).del();
 
@@ -34,36 +36,39 @@ exports.seed = async function (knex: Knex) {
       code: '12345',
     },
   ]);
+  await knex(permissionCategoriesTable).insert([
+    { id: 1, name: 'Reportes'},
+    { id: 2, name: 'Proceso de graduación'},
+    { id: 3, name: 'Docentes'},
+    { id: 4, name: 'Estudiantes'},
+    { id: 5, name: 'Usuarios'},
+  ])
+  await knex(permissionsTable).insert([
+    { id:1, name:'Ver el dashboard', category_id:1},
+    { id:2, name:'Ver reporte de los procesos de graduación', category_id:2},
+    { id:3, name:'Crear proceso de graduación', category_id:2},
+    { id:4, name:'Ver proceso de graduación por estudiantes', category_id:2},
+    { id:5, name:'Asignar proceso de graduación', category_id:2},
+    { id:6, name:'Ver lista de docentes', category_id:3},
+    { id:7, name:'Agregar docente', category_id:3},
+    { id:8, name:'Ver reporte de docente', category_id:3},
+    { id:9, name:'Realizar una cita con docente', category_id:3},
+    { id:10, name:'Eliminar docente', category_id:3},
+    { id:11, name:'Editar información de docente', category_id:3},
+    { id:12, name:'Ver lista de estudiantes', category_id:4},
+    { id:13, name:'Agregar estudiante', category_id:4},
+    { id:14, name:'Eliminar estudiante', category_id:4},
+    { id:15, name:'Editar información de estudiante', category_id:4},
+    { id:16, name:'Ver reporte de estudiante', category_id:4},
+    { id:17, name:'Realizar cita con estudiante', category_id:4},
+    { id:18, name:'Ver lista de usuarios', category_id:5},
+    { id:19, name:'Ver reporte de usuarios', category_id:5},
+    { id:20, name:'Eliminar usuario', category_id:5},
+    { id:21, name:'Editar información de usuario', category_id:5},
+    { id:22, name:'Agregar usuario', category_id:5},
 
-  await knex('user_profile').insert({
-    id: 2,
-    username: 'professor',
-    name: 'Alexis',
-    lastname: 'Marechal',
-    mothername: 'Marin',
-    password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
-    email: 'alexismarechal@upb.edu',
-    phone: '12345678',
-    role_id: 2,
-    code: '12345',
-  });
+  ])
 
-  await knex('professors').insert({
-    id: 2,
-    degree: 'PhD.',
-    department: 'Computer Science',
-    specialty: 'Artificial Intelligence',
-  });
-
-
-  // llenar la tabla de permisos
-  await knex('permissions').insert([
-    { id: 1, description: 'dashboard' },
-    { id: 2, description: 'events' },
-    { id: 3, description: 'permissions' },
-    { id: 4, description: 'roles' },
-    { id: 4, description: 'roles' },
-  ]);
   // return knex('stages')
   //   .del()
   //   .then(function () {
