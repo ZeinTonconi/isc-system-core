@@ -40,5 +40,5 @@ app.use('/api/permission', permissionRouter);
 app.use('/api/user', userRouter);
 app.use('/api/roles', rolesRouter);
 app.use('/api/events', eventInternsRouter)
-app.use('/api/events', eventsRouter);
+app.use('/api/interns', internsRouter);
 export default app;
