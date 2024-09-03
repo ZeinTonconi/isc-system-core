@@ -36,5 +36,5 @@ app.use('/api/stats', statsRouter);
 app.use('/api/email', emailRouter);
 app.use('/api/permission', permissionRouter);
 app.use('/api/events', eventInternsRouter,eventsRouter)
-app.use('/api/events', eventsRouter);
+app.use('/api/interns', internsRouter);
 export default app;
