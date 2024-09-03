@@ -9,7 +9,6 @@ exports.seed = async function (knex: Knex) {
   await knex(rolesTable).del();
   await knex(userProfileTable).del();
   await knex(professorTable).del();
-  await knex('permissions').del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
