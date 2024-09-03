@@ -9,6 +9,7 @@ exports.seed = async function (knex: Knex) {
   await knex(rolesTable).del();
   await knex(userProfileTable).del();
   await knex(professorTable).del();
+  await knex('permissions').del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
@@ -51,6 +52,15 @@ exports.seed = async function (knex: Knex) {
     specialty: 'Artificial Intelligence',
   });
 
+
+  // llenar la tabla de permisos
+  await knex('permissions').insert([
+    { id: 1, description: 'dashboard' },
+    { id: 2, description: 'events' },
+    { id: 3, description: 'permissions' },
+    { id: 4, description: 'roles' },
+    { id: 4, description: 'roles' },
+  ]);
   // return knex('stages')
   //   .del()
   //   .then(function () {
