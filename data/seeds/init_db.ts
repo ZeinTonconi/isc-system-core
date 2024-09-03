@@ -2,10 +2,13 @@ import { Knex } from 'knex';
 // SOLO SE DEBE CORRER EN DEV o QA
 const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
+const permissionCategoriesTable = 'permission_categories';
+
 exports.seed = async function (knex: Knex) {
   // Deletes ALL existing entries
   await knex(rolesTable).del();
   await knex(userProfileTable).del();
+  await knex(permissionCategoriesTable).del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
@@ -26,6 +29,13 @@ exports.seed = async function (knex: Knex) {
       role_id: 1,
     },
   ]);
+  await knex(permissionCategoriesTable).insert([
+    { id: 1, name: 'Reportes'},
+    { id: 2, name: 'Proceso de graduación'},
+    { id: 3, name: 'Docentes'},
+    { id: 4, name: 'Estudiantes'},
+    { id: 5, name: 'Usuarios'},
+  ])
 
   // return knex('stages')
   //   .del()
