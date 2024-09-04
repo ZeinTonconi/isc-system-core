@@ -5,8 +5,8 @@ import { handleError } from '../handlers/errorHandler';
 
 export const getStats = async (req: Request, res: Response) => {
   try {
-    const stats = await StastInteractor.getStats();
-    sendSuccess(res, stats, 'Stats retrieved successfully');
+    // const stats = await StastInteractor.getStats();
+    sendSuccess(res, [], 'Stats retrieved successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);
