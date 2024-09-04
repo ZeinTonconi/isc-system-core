@@ -1,8 +1,12 @@
 import type { Knex } from 'knex';
 
+const tableNameIntern = 'interns';
+const tableNameEvents = 'events';
+const tableNameEventsInterns = 'events_interns';
+
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
-    .createTable('interns', function (table) {
+    .createTable(tableNameIntern, function (table) {
       table.increments('id').primary();
       table
         .integer('user_profile_id')
@@ -16,7 +20,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('created_at').defaultTo(knex.fn.now(6));
       table.timestamp('updated_at').defaultTo(knex.fn.now(6));
     })
-    .createTable('events', function (table) {
+    .createTable(tableNameEvents, function (table) {
       table.increments('id').primary();
       table
         .integer('responsible_intern_id')
@@ -38,9 +42,9 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('created_at').defaultTo(knex.fn.now(6));
       table.timestamp('updated_at').defaultTo(knex.fn.now(6));
     })
-    .createTable('events_interns', function (table) {
-      table.integer('intern_id').unsigned().references('id').inTable('interns').onDelete('CASCADE');
-      table.integer('event_id').unsigned().references('id').inTable('events').onDelete('CASCADE');
+    .createTable(tableNameEventsInterns, function (table) {
+      table.integer('intern_id').unsigned().references('id').inTable(tableNameIntern).onDelete('CASCADE');
+      table.integer('event_id').unsigned().references('id').inTable(tableNameEvents).onDelete('CASCADE');
       table.enu('type', ['accepted', 'rejected', 'pending', 'reserve']).notNullable();
       table.timestamp('created_at').defaultTo(knex.fn.now(6));
       table.timestamp('updated_at').defaultTo(knex.fn.now(6));
@@ -50,7 +54,7 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTableIfExists('interns')
-    .dropTableIfExists('events')
-    .dropTableIfExists('events_interns');
+    .dropTableIfExists(tableNameIntern)
+    .dropTableIfExists(tableNameEvents)
+    .dropTableIfExists(tableNameEventsInterns);
 }

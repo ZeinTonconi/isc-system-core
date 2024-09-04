@@ -14,7 +14,9 @@ export const getEventInternsController = async(req: Request, res: Response) => {
         sendSuccess(res, result, 'Event_Interns process retrieved successfully')
     }
     catch(error){
-        res.status(500).json({success: false, message: 'Internal server error' })
+        if (error instanceof Error) {
+            handleError(res, error);
+        }
     }
 };
 
@@ -36,9 +38,11 @@ export const updateInternType = async(req: Request, res: Response) => {
         const { id_evento, id_becario } = req.params;
         const { status } = req.body;
         const result = await updateInternsType(parseInt(id_evento, 10), parseInt(id_becario, 10), status);
-        return res.status(200).json({ success: true, data: result });
-      } catch (error) {
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        sendSuccess(res,result, 'Update Intern process retrieved successfully')
+    } catch (error) {
+        if (error instanceof Error) {
+            handleError(res, error);
+        }
     }
 }
 
@@ -46,8 +50,10 @@ export const deleteRegistrationController = async(req: Request, res: Response) =
     try {
         const { id_evento, id_becario } = req.params;
         const result = await cancelInternRegistration(parseInt(id_evento, 10),parseInt( id_becario));
-        return res.status(200).json({ success: true, data: result });
+        sendSuccess(res,result,'Delete Registrations process retrieved successfully');
     } catch (error) {
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+        if (error instanceof Error) {
+            handleError(res, error);
+        }
     }
 }
