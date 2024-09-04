@@ -1,4 +1,4 @@
-import { getEventInterns, registerInternProcess, updateInternType, deleteInternRegistration } from '../repositories/eventInternsRepository';
+import { getEventInterns, registerInternProcess, updateInternType, deleteInternRegistration, updateStatusForEventInterns } from '../repositories/eventInternsRepository';
 
 export const getEventIntern = async (eventId: number) => {
     try {
@@ -39,5 +39,15 @@ export const cancelInternRegistration = async (id_evento: number, id_becario: nu
     } catch(error){
         console.error('Error in EventInternsService.deleteInternRegistration',error);
         throw new Error('Error fetching Cancel Registration');
+    }
+}
+
+export const updateEventHistory = async (id_evento: number) => {
+    try{
+        const updatedRows = await updateStatusForEventInterns(id_evento, ['pending', 'reserve'], 'rejected');
+        return updatedRows;
+    } catch(error){
+        console.error('Error in EventInternsService.updateEventHistory',error);
+        throw new Error('Error fetching Update Event History');
     }
 }

@@ -31,6 +31,7 @@ export const registerInternProcess= async(eventId: number, internId: number ) =>
             intern_id: internId,
             type: 'pending',
         }).returning('*');
+        return registerInterns;
     }
     catch(error){
         console.error('Error in EventInternsRepository.registerInternProcess',error)
@@ -72,3 +73,21 @@ export const deleteInternRegistration = async(eventId: number, internId: number)
         throw new Error('Error deleting Intern registration');
     }
 }
+
+export const updateStatusForEventInterns = async (eventId: number, currentStatuses: string[], newStatus: string) => {
+    try {
+        const result = await db(tableName)
+            .where('event_id', eventId)
+            .whereIn('type', currentStatuses)
+            .update({
+                type: newStatus,
+                updated_at: new Date()
+            })
+            .returning('*');
+
+        return result;
+    } catch (error) {
+        console.error('Error in updateStatusForEventInterns', error);
+        throw new Error('Error updating status for Event Interns');
+    }
+};
