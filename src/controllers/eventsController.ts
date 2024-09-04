@@ -8,6 +8,7 @@ import {
 } from '../services/eventsService';
 
 import { sendCreated, sendSuccess } from '../handlers/successHandler';
+import { handleError } from '../handlers/errorHandler';
 
 export const getEventsController = async (req: Request, res: Response) => {
   try {
@@ -30,7 +31,9 @@ export const getEventsByIdController = async (req: Request, res: Response) => {
     }
     sendSuccess(res, event, 'Event retrieved succesfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -40,7 +43,9 @@ export const createEventController = async (req: Request, res: Response) => {
     const event = await createEventService(body);
     sendCreated(res, event, 'Event created succesfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -50,7 +55,9 @@ export const updateEventController = async (req: Request, res: Response) => {
     const event = await updateEventService(body, params.id);
     sendCreated(res, event, 'Event updated succesfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
 
@@ -60,6 +67,8 @@ export const deleteEventController = async (req: Request, res: Response) => {
     const event = await deleteEventService(id);
     sendSuccess(res, event, 'Event deleted succesfully');
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
   }
 };
