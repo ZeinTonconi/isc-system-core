@@ -1,5 +1,4 @@
 import { Knex } from 'knex';
-// SOLO SE DEBE CORRER EN DEV o QA
 const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
 const permissionCategoriesTable = 'permission_categories';
