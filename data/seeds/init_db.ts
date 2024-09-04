@@ -32,7 +32,7 @@ exports.seed = async function (knex: Knex) {
     },
   ]);
 
-  await knex('user_profile').insert({
+  await knex(userProfileTable).insert({
     id: 2,
     username: 'professor',
     name: 'Alexis',
@@ -54,13 +54,13 @@ exports.seed = async function (knex: Knex) {
 
 
   // llenar la tabla de permisos
-  await knex('permissions').insert([
-    { id: 1, description: 'dashboard' },
-    { id: 2, description: 'events' },
-    { id: 3, description: 'permissions' },
-    { id: 4, description: 'roles' },
-    { id: 4, description: 'roles' },
-  ]);
+  // await knex('permissions').insert([
+  //   { id: 1, description: 'dashboard' },
+  //   { id: 2, description: 'events' },
+  //   { id: 3, description: 'permissions' },
+  //   { id: 4, description: 'roles' },
+  //   { id: 4, description: 'roles' },
+  // ]);
   // return knex('stages')
   //   .del()
   //   .then(function () {
