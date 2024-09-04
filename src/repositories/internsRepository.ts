@@ -27,7 +27,26 @@ export const getInternsById = async(internId: number)=>{
         const event = await db(tableName).where('id', internId).first();
         return event;
     } catch (error) {
-        console.error('Error in eventsRepository.getInternsById', error);
+        console.error('Error in InternsRepository.getInternsById', error);
+        throw new Error('Error fetching Interns');
+    }
+}
+
+export const getRecordIntern = async(internId: number)=> {
+    try{
+        const event = await db(`${tableName} as in`)
+        .join('events_interns as ei', 'in.id','ei.intern_id')
+        .join('events as e','e.id','ei.event_id')
+        .select(
+            'e.*',
+            'ei.type',
+            'ei.created_at as registration_date',
+            'ei.updated_at as last_update'
+        )
+        .where('ei.intern_id', internId)
+        return event;
+    } catch (error) {
+        console.error('Error in InternsRepository.getRecordIntern', error);
         throw new Error('Error fetching Interns');
     }
 }

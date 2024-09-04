@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getEventIntern, registerIntern, updateInternsType, cancelInternRegistration } from '../services/eventInternsService';
+import { getEventIntern, registerIntern, updateInternsType, cancelInternRegistration, updateEventHistory } from '../services/eventInternsService';
 import { sendCreated, sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
 
@@ -57,3 +57,16 @@ export const deleteRegistrationController = async(req: Request, res: Response) =
         }
     }
 }
+
+export const updateEventHistoryController = async(req: Request, res: Response) => {
+    try{
+      const { id_evento } = req.params
+      const updateEvents = await updateEventHistory(parseInt(id_evento,10));
+      sendCreated(res, updateEvents, 'Event updated succesfully');
+  
+    }catch(error){
+      if (error instanceof Error) {
+        handleError(res, error);
+      }
+    }
+  }
