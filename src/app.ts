@@ -10,12 +10,12 @@ import modalityRouter from './routes/modalityRoutes';
 import adminRouter from './routes/adminRoutes';
 import statsRouter from './routes/statsRoutes';
 import emailRouter from './routes/emailRoutes';
-import eventInternsRouter from './routes/eventInternsRoutes'
+import eventInternsRouter from './routes/eventInternsRoutes';
 import permissionRouter from './routes/permissionRouters';
 import eventsRouter from './routes/eventsRoutes';
 import userRouter from './routes/userRoutes';
 import rolesRouter from './routes/rolesRoutes';
-import internsRouter from './routes/internsRoutes'
+import internsRouter from './routes/internsRoutes';
 
 dotenv.config();
 

@@ -35,6 +35,7 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('duration_hours');
       table.integer('max_interns');
       table.integer('min_interns');
+      table.integer('assigned_hours');
       table.timestamp('start_date');
       table.timestamp('end_date');
       table.timestamp('registration_deadline');
@@ -44,8 +45,18 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('updated_at').defaultTo(knex.fn.now(6));
     })
     .createTable(tableNameEventsInterns, function (table) {
-      table.integer('intern_id').unsigned().references('id').inTable(tableNameIntern).onDelete('CASCADE');
-      table.integer('event_id').unsigned().references('id').inTable(tableNameEvents).onDelete('CASCADE');
+      table
+        .integer('intern_id')
+        .unsigned()
+        .references('id')
+        .inTable(tableNameIntern)
+        .onDelete('CASCADE');
+      table
+        .integer('event_id')
+        .unsigned()
+        .references('id')
+        .inTable(tableNameEvents)
+        .onDelete('CASCADE');
       table.enu('type', ['accepted', 'rejected', 'pending', 'reserve']).notNullable();
       table.boolean('attendance').defaultTo(false);
       table.string('notes');
