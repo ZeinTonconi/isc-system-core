@@ -12,6 +12,7 @@ import statsRouter from './routes/statsRoutes';
 import emailRouter from './routes/emailRoutes';
 import permissionRouter from './routes/permissionRouters'
 import userRouter from './routes/userRoutes';
+import rolesRouter from './routes/rolesRoutes';
 
 dotenv.config();
 
@@ -34,5 +35,6 @@ app.use('/api/stats', statsRouter);
 app.use('/api/email', emailRouter);
 app.use('/api/permission', permissionRouter);
 app.use('/api/user', userRouter);
+app.use('/api/roles', rolesRouter);
 
 export default app;
