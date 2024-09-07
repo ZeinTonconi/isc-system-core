@@ -8,12 +8,14 @@ export const getEventInterns = async (eventId: number) => {
             .join('events as e', 'ei.event_id', 'e.id')
             .join('interns as i', 'ei.intern_id', 'i.id')
             .select(
-            'e.*',
-            'i.*',
-            'ei.type',
-            'ei.created_at as registration_date',
-            'ei.updated_at as last_update'
-            )
+                'e.id as id_events',
+                'i.id as id_interns',
+                'e.*',
+                'i.*',
+                'ei.type',
+                'ei.created_at as registration_date',
+                'ei.updated_at as last_update'
+              )
             .where('ei.event_id', eventId)
         return listEventInterns;
     }
