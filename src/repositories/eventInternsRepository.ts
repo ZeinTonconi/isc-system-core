@@ -91,3 +91,21 @@ export const updateStatusForEventInterns = async (eventId: number, currentStatus
         throw new Error('Error updating status for Event Interns');
     }
 };
+
+export const updateInternAttendance = async (id_evento: number,id_becario: number,new_status: boolean) => {
+    try{
+        const result =await db(tableName)
+        .where({
+            event_id: id_evento,
+            intern_id: id_becario
+        })
+        .update({
+            attendance: new_status
+        })
+        .returning('*');
+        return result;
+    } catch (error) {
+        console.error('Error in updateInternAttendance', error);
+        throw new Error('Error updating attendance status for Interns');
+    }
+}
