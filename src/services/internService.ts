@@ -1,10 +1,18 @@
 import { updateHoursInterns, getInternsById, getRecordIntern } from "../repositories/internsRepository";
+import { getEventsInternById } from "./eventInternsService";
+import { getEventsByIdService } from "./eventsService";
 
-export const updateHours = async(internId: number, hoursEvent: number) => {
+export const updateHours = async(internId: number, type: string, duration_hours: number) => {
     try{
-        const {pending_hours, completed_hours} = await getInternById(internId);
-        const updateHoursIntern = await updateHoursInterns(internId,pending_hours- hoursEvent, completed_hours+hoursEvent);
-        return updateHoursIntern;
+        if(type === "accepted"){
+            const {total_hours, pending_hours, completed_hours} = await getInternById(internId);
+            var newPendingHours = pending_hours- duration_hours;
+            if(newPendingHours<0)
+                newPendingHours = 0
+            const updateHoursIntern = await updateHoursInterns(internId,newPendingHours, total_hours - newPendingHours);
+            return updateHoursIntern;
+        }
+       
     } catch(error){
         console.error('Error in InternsService.updateHours',error);
         throw new Error('Error fetching Update Hours Intern');
