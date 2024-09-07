@@ -10,7 +10,28 @@ import {
 export const getEventIntern = async (eventId: number) => {
   try {
     const listEventInterns = await getEventInterns(eventId);
-    return listEventInterns;
+
+    const acceptedInterns = listEventInterns.filter(intern => intern.type === 'accepted');
+    const pendingInterns = listEventInterns.filter(intern => intern.type === 'pending');
+    const reserveInterns = listEventInterns.filter(intern => intern.type === 'reserve');
+    const rejectedInterns = listEventInterns.filter(intern => intern.type === 'rejected');
+
+    pendingInterns.sort((a, b) => {
+      if (a.pending_hours !== b.pending_hours) {
+        return b.pending_hours - a.pending_hours;
+      } else {
+        return new Date(a.registration_date).getTime() - new Date(b.registration_date).getTime();
+      }
+    });
+
+    const sortedList = [
+      ...acceptedInterns,
+      ...pendingInterns, 
+      ...reserveInterns, 
+      ...rejectedInterns
+    ];
+
+    return sortedList;
   } catch (error) {
     console.error('Error in EventInternsService.getEventIntern', error);
     throw new Error('Error fetching ListEventInterns');
