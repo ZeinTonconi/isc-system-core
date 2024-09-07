@@ -5,7 +5,7 @@ import * as RolesInteractor from '../interactors/rolesInteractor';
 import Rol from '../models/rol';
 
 export const getRoles = async (req: Request, res: Response) => {
-  const rolName = req.body.rolName;
+  const rolName = req.body.name;
   try {
     const roles = await RolesInteractor.getRoles(rolName);
     if (!roles) {
@@ -43,6 +43,21 @@ export const editRol = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'can not edit rol' });
     }
     sendSuccess(res, editedRol, 'Roles edited successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const disableRol = async (req: Request, res: Response) => {
+  const id: number = parseInt(req.params.id);
+  try {
+    const disabledRol = await RolesInteractor.disableRol(id);
+    if (!disabledRol) {
+      return res.status(404).json({ success: false, message: 'can not delet rol' });
+    }
+    sendSuccess(res, disabledRol, 'Roles deleted successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);

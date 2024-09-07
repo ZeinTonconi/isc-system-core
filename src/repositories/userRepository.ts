@@ -130,3 +130,13 @@ export const updateUser = async (userId: number, userData: User | createUserRequ
     throw error;
   }
 };
+
+export const getUserByRol = async (rolId: number) => {
+  try {
+    const usersByRol = await db('user_profile').where('role_id', rolId).returning('*');
+    return usersByRol;
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+};
