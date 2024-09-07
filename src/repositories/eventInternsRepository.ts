@@ -25,6 +25,24 @@ export const getEventInterns = async (eventId: number) => {
     }
 };
 
+export const getEventInternsByTwoId = async (eventId: number, internId: number) => {
+    try{
+        const listEventInterns = await db(tableName)
+        .where({
+            event_id: eventId,
+            intern_id: internId
+        }
+        ).first(); 
+        return listEventInterns;
+    }
+    catch(error){
+        console.error('Error in EventInternsRepository.getEventInternsByTwoId',error)
+        throw new Error('Error fetching ListEventInterns')
+    }
+};
+
+
+
 export const registerInternProcess= async(eventId: number, internId: number ) => {
 
     try{

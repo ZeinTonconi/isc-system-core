@@ -3,12 +3,10 @@ import { updateHours, getInternById, getRecordInterns } from '../services/intern
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
 
-
 export const updateHoursController = async (req: Request, res: Response) => {
     try {
-      const { intern_id } = req.params;
-      const {new_hours} = req.body;
-      const updateHoursIntern = await updateHours(parseInt(intern_id,10), new_hours);
+      const { intern_id, event_id} = req.params;
+      const updateHoursIntern = await updateHours(parseInt(intern_id,10), parseInt(event_id,10));
       if(!updateHoursIntern){
         return res.status(404).json({ success: false, message: 'Interns process not found' })
       }
