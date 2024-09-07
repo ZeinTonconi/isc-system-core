@@ -3,13 +3,12 @@ import { checkUserAuth } from '../middlewares/checkUserAuth';
 import * as RolesController from '../controllers/rolesController';
 import { validateBody } from '../middlewares/validateBodyMiddleware';
 import RolesByNameSchema from '../middlewares/schemas/searchRolesByNameSchema';
-import CreateRolSchema from '../middlewares/schemas/createRolSchema';
-import EditRolSchema from '../middlewares/schemas/editRolSchema';
+import baseRolSchema from '../middlewares/schemas/BaseRolSchema';
 const router = Router();
 
 router.route('/').get(checkUserAuth, validateBody(RolesByNameSchema), RolesController.getRoles);
-router.route('/').post(checkUserAuth, validateBody(CreateRolSchema), RolesController.createRol);
-router.route('/:id').put(checkUserAuth, validateBody(EditRolSchema), RolesController.editRol);
-router.route('/:id').delete(checkUserAuth); //False Delete rol
+router.route('/').post(checkUserAuth, validateBody(baseRolSchema), RolesController.createRol);
+router.route('/:id').put(checkUserAuth, validateBody(baseRolSchema), RolesController.editRol);
+router.route('/:id').delete(checkUserAuth, RolesController.disableRol);
 
 export default router;
