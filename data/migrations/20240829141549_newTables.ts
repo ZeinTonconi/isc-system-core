@@ -27,7 +27,8 @@ export async function up(knex: Knex): Promise<void> {
         .unsigned()
         .references('id')
         .inTable('interns')
-        .onDelete('CASCADE');
+        .onDelete('CASCADE')
+        .nullable;
       table.string('title');
       table.string('description');
       table.string('location');
@@ -46,6 +47,8 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('intern_id').unsigned().references('id').inTable(tableNameIntern).onDelete('CASCADE');
       table.integer('event_id').unsigned().references('id').inTable(tableNameEvents).onDelete('CASCADE');
       table.enu('type', ['accepted', 'rejected', 'pending', 'reserve']).notNullable();
+      table.boolean('attendance').defaultTo(false);
+      table.string('notes');
       table.timestamp('created_at').defaultTo(knex.fn.now(6));
       table.timestamp('updated_at').defaultTo(knex.fn.now(6));
       table.primary(['intern_id', 'event_id']);
