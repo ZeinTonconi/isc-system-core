@@ -2,13 +2,14 @@ import { updateHoursInterns, getInternsById, getRecordIntern } from "../reposito
 import { getEventsInternById } from "./eventInternsService";
 import { getEventsByIdService } from "./eventsService";
 
-export const updateHours = async(internId: number, eventId: number) => {
+export const updateHours = async(internId: number, type: string, duration_hours: number) => {
     try{
-        const { type } = await getEventsInternById(eventId,internId);
         if(type === "accepted"){
-            const {duration_hours} = await getEventsByIdService(eventId.toString());
-            const {pending_hours, completed_hours} = await getInternById(internId);
-            const updateHoursIntern = await updateHoursInterns(internId,pending_hours- duration_hours, completed_hours+ duration_hours);
+            const {total_hours, pending_hours, completed_hours} = await getInternById(internId);
+            var newPendingHours = pending_hours- duration_hours;
+            if(newPendingHours<0)
+                newPendingHours = 0
+            const updateHoursIntern = await updateHoursInterns(internId,newPendingHours, total_hours - newPendingHours);
             return updateHoursIntern;
         }
        
