@@ -36,11 +36,21 @@ export const getRecordInterns = async(internId: number) => {
 
         const acceptedEvents = events.filter(event => event.type === 'accepted');
         const rejectedEvents = events.filter(event => event.type === 'rejected');
+        const listHistory = [...acceptedEvents,...rejectedEvents]
         
-        return {
-            accepted: acceptedEvents,
-            rejected: rejectedEvents
-        };
+        const groupedEvents = listHistory.reduce((acc, event) => {
+            const eventDate = new Date(event.start_date); // Obtener la fecha de inicio del evento
+            const monthYear = eventDate.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+
+            if (!acc[monthYear]) {
+                acc[monthYear] = [];
+            }
+            acc[monthYear].push(event);
+
+            return acc;
+        }, {});
+
+        return groupedEvents;
     }catch(error){
         console.error('Error in InternsService.getRecordInterns:', error);
         throw new Error('Error fetching Interns');
