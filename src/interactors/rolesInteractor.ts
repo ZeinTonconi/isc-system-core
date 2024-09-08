@@ -1,5 +1,6 @@
 import Rol from '../models/rol';
 import * as RolesService from '../services/rolesService';
+import { getUserByRol } from '../services/userService';
 
 export const getRoles = async (rolName: string) => {
   try {
@@ -28,5 +29,19 @@ export const editRol = async (rol: Rol, id: number) => {
   } catch (error) {
     console.error('Error on edit Rol:', error);
     throw new Error('Error on edit Rol');
+  }
+};
+
+export const disableRol = async (id: number) => {
+  try {
+    const usersByRol = await getUserByRol(id);
+    if (usersByRol.length > 0) {
+      throw Error('The Role is still in use');
+    }
+    const disabledRol = await RolesService.disableRol(id);
+    return disabledRol;
+  } catch (error) {
+    console.error('Error on delete Rol:', error);
+    throw new Error('Error on delete Rol');
   }
 };

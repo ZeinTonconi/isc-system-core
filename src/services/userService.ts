@@ -63,3 +63,12 @@ export const deleteUser = async (userId: number) => {
 export const getUserById = async (userId: number): Promise<User | null> => {
   return UserRepository.getUserById(userId);
 };
+
+export const getUserByRol = async (rolId: number) => {
+  try {
+    return UserRepository.getUserByRol(rolId);
+  } catch (error) {
+    logger.error(`Error fetching users: ${error}`);
+    throw new Error('Error occurred while fetching users');
+  }
+};

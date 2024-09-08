@@ -32,3 +32,13 @@ export const editRol = async (rolData: Rol, id: number) => {
     throw error;
   }
 };
+
+export const disableRol = async (id: number) => {
+  try {
+    const editedRol = await db(rolesTable).where('id', id).update('disabled', true).returning('*');
+    return editedRol;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
