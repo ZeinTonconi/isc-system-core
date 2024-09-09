@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { updateHours, getInternById, getRecordInterns } from '../services/internService';
+import { updateHours, getInternById, getRecordInterns, getInformationsIntern } from '../services/internService';
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
 
@@ -42,6 +42,21 @@ export const getRecordInternsController = async(req: Request, res: Response) => 
       return res.status(404).json({ success: false, message: 'Interns process not found' }) 
     }
     sendSuccess(res, events, 'Events retrieved succesfully');
+  } catch (error){
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+}
+
+export const getInformationsInternController = async(req: Request, res: Response) => {
+  try{
+    const { intern_id } = req.params;
+    const infoIntern = await getInformationsIntern(parseInt(intern_id, 10));
+    if(! infoIntern){
+      return res.status(404).json({ success: false, message: 'Interns process not found' }) 
+    }
+    sendSuccess(res, infoIntern, 'Events retrieved succesfully');
   } catch (error){
     if (error instanceof Error) {
       handleError(res, error);

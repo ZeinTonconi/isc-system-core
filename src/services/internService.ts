@@ -1,6 +1,4 @@
-import { updateHoursInterns, getInternsById, getRecordIntern } from "../repositories/internsRepository";
-import { getEventsInternById } from "./eventInternsService";
-import { getEventsByIdService } from "./eventsService";
+import { updateHoursInterns, getInternsById, getRecordIntern, getInformationIntern } from "../repositories/internsRepository";
 
 export const updateHours = async(internId: number, type: string, duration_hours: number) => {
     try{
@@ -41,6 +39,16 @@ export const getRecordInterns = async(internId: number) => {
             accepted: acceptedEvents,
             rejected: rejectedEvents
         };
+    }catch(error){
+        console.error('Error in InternsService.getRecordInterns:', error);
+        throw new Error('Error fetching Interns');
+    }
+}
+
+export const getInformationsIntern = async (internId: number) => {
+    try{
+        const infoIntern = await getInformationIntern(internId);
+        return infoIntern;
     }catch(error){
         console.error('Error in InternsService.getRecordInterns:', error);
         throw new Error('Error fetching Interns');
