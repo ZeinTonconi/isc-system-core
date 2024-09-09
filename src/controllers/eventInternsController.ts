@@ -6,6 +6,7 @@ import {
   cancelInternRegistration,
   updateEventHistory,
   updateInternsAttendance,
+  getEventInformations,
 } from '../services/eventInternsService';
 import { sendCreated, sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
@@ -92,3 +93,18 @@ export const updateAttendanceController = async (req: Request, res: Response) =>
     }
   }
 };
+
+export const getEventInformationsController = async(req: Request, res: Response) => {
+  try {
+    const result = await getEventInformations();
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: 'Event_Interns process not found' });
+    }
+    sendSuccess(res, result, 'Event_Interns process retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+}
