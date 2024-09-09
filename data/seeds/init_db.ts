@@ -87,14 +87,14 @@ exports.seed = async function (knex: Knex) {
   });
 
 
-  // llenar la tabla de permisos
-  await knex('permissions').insert([
-    { id: 1, description: 'dashboard' },
-    { id: 2, description: 'events' },
-    { id: 3, description: 'permissions' },
-    { id: 4, description: 'roles' },
-    { id: 4, description: 'roles' },
-  ]);
+  // // llenar la tabla de permisos
+  // await knex('permissions').insert([
+  //   { id: 1, description: 'dashboard' },
+  //   { id: 2, description: 'events' },
+  //   { id: 3, description: 'permissions' },
+  //   { id: 4, description: 'roles' },
+  //   { id: 4, description: 'roles' },
+  // ]);
   // return knex('stages')
   //   .del()
   //   .then(function () {
