@@ -34,8 +34,8 @@ export const getEventInterns = async (eventId: number) => {
 export const getEventInformation = async () => {
   try {
     const listEventInterns = await db(`${tableName} as ei`)
-      .join('events as e', 'ei.event_id', 'e.id')
-      .join('interns as i', 'ei.intern_id', 'i.id')
+      .rightJoin('events as e', 'ei.event_id', 'e.id')
+      .leftJoin('interns as i', 'ei.intern_id', 'i.id')
       .select(
         'e.*',
         db.raw(`COUNT(CASE WHEN ei.type = 'accepted' THEN 1 END) as accepted_interns`),
