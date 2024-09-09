@@ -6,6 +6,7 @@ import {
   updateStatusForEventInterns,
   updateInternAttendance,
   getEventInternsByTwoId,
+  getEventInformation
 } from '../repositories/eventInternsRepository';
 
 export const getEventIntern = async (eventId: number) => {
@@ -103,3 +104,13 @@ export const updateInternsAttendance = async (id_evento: number,id_becario: numb
     throw new Error('Error updating Update Interns Attendance');
   }
 };
+
+export const getEventInformations = async() => {
+  try {
+    const listEventInterns = await getEventInformation();
+    return listEventInterns;
+  } catch (error) {
+    console.error('Error in EventInternsService.getEventIntern', error);
+    throw new Error('Error fetching ListEventInterns');
+  }
+}
