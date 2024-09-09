@@ -37,7 +37,7 @@ export const getRecordInterns = async(internId: number) => {
         const listHistory = [...acceptedEvents,...rejectedEvents]
         
         const groupedEvents = listHistory.reduce((acc, event) => {
-            const eventDate = new Date(event.start_date); // Obtener la fecha de inicio del evento
+            const eventDate = new Date(event.start_date);
             const monthYear = eventDate.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
 
             if (!acc[monthYear]) {
