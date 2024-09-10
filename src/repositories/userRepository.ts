@@ -11,7 +11,8 @@ export const getUserByEmail = async (email: string) => {
     const user = await db('user_profile as u')
       .where('u.email', email)
       .join('roles as r', 'u.role_id', '=', 'r.id')
-      .first('u.*', 'r.name as role_name');
+      .first('u.*', db.raw('array_agg(r.name) as roles'))
+      .groupBy('u.id');
     return user;
   } catch (error) {
     console.error('Error fetching user by email:', error);
@@ -133,6 +134,16 @@ export const updateUser = async (userId: number, userData: User | createUserRequ
     return userData;
   } catch (error) {
     console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+export const getUserByRol = async (rolId: number) => {
+  try {
+    const usersByRol = await db('user_profile').where('role_id', rolId).returning('*');
+    return usersByRol;
+  } catch (error) {
+    console.error('Error deleting user:', error);
     throw error;
   }
 };
