@@ -5,6 +5,8 @@ export async function up(knex: Knex): Promise<void> {
     .createTable('roles', function (table) {
       table.increments('id').primary();
       table.string('name').notNullable().unique();
+      table.boolean('disabled').notNullable().defaultTo(false);
+      table.timestamps(true, true);
     })
     .createTable('permission_categories', function (table) {
       table.increments('id').primary();
@@ -12,13 +14,22 @@ export async function up(knex: Knex): Promise<void> {
     })
     .createTable('permissions', function (table) {
       table.increments('id').primary();
-      table.string('name').notNullable().unique();
+      table.string('description').notNullable();
+      table.string('display_name').notNullable();
+      //TODO: Make it unique when every permission has its own path
+      table.string('path').notNullable();
+      table.integer('sort').notNullable();
+      table.string('name').notNullable();
+      table.enu('type', ['page', 'action']).notNullable();
+      table.boolean('disabled').notNullable().defaultTo(false);
       table
         .integer('category_id')
         .unsigned()
         .references('id')
         .inTable('permission_categories')
         .onDelete('CASCADE');
+      table.timestamps(true, true);
+      table.timestamp('deleted_at').nullable();
     })
     .createTable('role_permissions', function (table) {
       table.integer('role_id').unsigned().references('id').inTable('roles').onDelete('CASCADE');

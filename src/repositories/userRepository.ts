@@ -105,7 +105,7 @@ export const getProfessors = async () => {
 
 export const getUserById = async (userId: number) => {
   try {
-    const user = await db('users').where('id', userId).first();
+    const user = await db('user_profile').where('id', userId).first();
     return user;
   } catch (error) {
     console.error('Error fetching user by id:', error);
@@ -115,7 +115,7 @@ export const getUserById = async (userId: number) => {
 
 export const deleteUser = async (userId: number) => {
   try {
-    await db('users').where('id', userId).delete();
+    await db('user_profile').where('id', userId).delete();
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
@@ -134,6 +134,16 @@ export const updateUser = async (userId: number, userData: User | createUserRequ
     return userData;
   } catch (error) {
     console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+export const getUserByRol = async (rolId: number) => {
+  try {
+    const usersByRol = await db('user_profile').where('role_id', rolId).returning('*');
+    return usersByRol;
+  } catch (error) {
+    console.error('Error deleting user:', error);
     throw error;
   }
 };
