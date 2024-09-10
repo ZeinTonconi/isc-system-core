@@ -1,7 +1,7 @@
 import * as userService from '../services/permissionService';
 import { NotFoundError } from '../errors/notFoundError';
 
-export const getRolesAndPermissions = async (userId: string) => {
+export const getRolesAndPermissions = async (userId: number) => {
     try {
       const rolesAndPermissions = await userService.getUserRolesAndPermissions(userId);
   
