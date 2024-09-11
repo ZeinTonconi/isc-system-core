@@ -13,5 +13,5 @@ runMigrations()
   })
   .catch(err => {
     console.error('Failed to run migrations:', err);
-    process.exit(1); // Sale del proceso si las migraciones fallan
+    process.exit(1);
   });
