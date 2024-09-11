@@ -4,7 +4,7 @@ import * as PermissionsInteractor from '../interactors/permissionsInteractor'
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
 import { AuthenticationError } from '../errors/authenticationError';
-import UserResponse from '../models/userResponse';
+import UserResponse from '../models/userResponseInterface';
 
 const login = async (req: Request, res: Response) => {
   try {
