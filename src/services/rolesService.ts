@@ -7,7 +7,7 @@ export const getRoles = async (rolName: string) => {
     const roles = await RolesRepository.getRoles();
     if (rolName && rolName.length > 0) {
       const rolesByName = roles.filter((rol: RolComplete) => {
-        return rol.name.startsWith(rolName) && !rol.disabled;
+        return rol.name.toLowerCase().startsWith(rolName.toLowerCase()) && !rol.disabled;
       });
       return rolesByName;
     }
@@ -17,7 +17,7 @@ export const getRoles = async (rolName: string) => {
     return filteredRoles;
   } catch (error) {
     console.error('Error fetching Roles:', error);
-    throw new Error('Error fetching Roles');
+    throw error;
   }
 };
 
@@ -25,7 +25,7 @@ export const createRol = async (rol: Rol) => {
   try {
     const similarRoles = await getRoles(rol.name);
     const equalRoles = similarRoles.filter((rolComparer: Rol) => {
-      return rol.name == rolComparer.name;
+      return rol.name.toLowerCase() === rolComparer.name.toLowerCase();
     });
     if (equalRoles.length > 0) {
       throw Error('there is another Rol with the same name');
@@ -34,7 +34,7 @@ export const createRol = async (rol: Rol) => {
     return newRol;
   } catch (error) {
     console.error('Error creating Rol:', error);
-    throw new Error('Error creating Rol');
+    throw error;
   }
 };
 
@@ -42,7 +42,7 @@ export const editRol = async (rol: Rol, id: number) => {
   try {
     const similarRoles = await getRoles(rol.name);
     const equalRoles = similarRoles.filter((rolComparer: Rol) => {
-      return rol.name == rolComparer.name;
+      return rol.name.toLowerCase() === rolComparer.name.toLowerCase();
     });
     if (equalRoles.length > 0) {
       throw Error('there is another Rol with the same name');
@@ -51,7 +51,7 @@ export const editRol = async (rol: Rol, id: number) => {
     return editedRol;
   } catch (error) {
     console.error('Error while editting Rol:', error);
-    throw new Error('Error while editting Rol');
+    throw error;
   }
 };
 
@@ -61,6 +61,6 @@ export const disableRol = async (id: number) => {
     return disabledRol;
   } catch (error) {
     console.error('Error while deleting Rol:', error);
-    throw new Error('Error while deleting Rol');
+    throw error;
   }
 };

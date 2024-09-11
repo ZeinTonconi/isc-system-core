@@ -8,7 +8,7 @@ export const getRoles = async (rolName: string) => {
     return roles;
   } catch (error) {
     console.error('Error getting Roles:', error);
-    throw new Error('Error getting Roles');
+    throw error;
   }
 };
 
@@ -18,7 +18,7 @@ export const createRol = async (rol: Rol) => {
     return roles;
   } catch (error) {
     console.error('Error creating Rol:', error);
-    throw new Error('Error creating Rol');
+    throw error;
   }
 };
 
@@ -28,7 +28,7 @@ export const editRol = async (rol: Rol, id: number) => {
     return editedRol;
   } catch (error) {
     console.error('Error on edit Rol:', error);
-    throw new Error('Error on edit Rol');
+    throw error;
   }
 };
 
@@ -42,6 +42,6 @@ export const disableRol = async (id: number) => {
     return disabledRol;
   } catch (error) {
     console.error('Error on delete Rol:', error);
-    throw new Error('Error on delete Rol');
+    throw error;
   }
 };
