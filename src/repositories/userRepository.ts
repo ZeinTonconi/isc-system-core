@@ -87,7 +87,7 @@ export const getProfessors = async () => {
         'p.degree as degree',
         db.raw("CONCAT(up.name, ' ', up.lastname, ' ', up.mothername) as fullname")
       )
-      .join('user_profile as up', 'p.id', '=', 'up.id')
+      .join('user_profile as up', 'p.id', '=', 'up.id');
     logger.info('Professors fetched successfully.');
     logger.debug(`Fetched professors: ${JSON.stringify(professors)}`);
     return professors;
@@ -139,5 +139,34 @@ export const getUserByRol = async (rolId: number) => {
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
+  }
+};
+
+/**
+ * Get professor by id
+ * @param id Professor id
+ * @returns Professor data
+ */
+export const getProfessorById = async (id: string) => {
+  try {
+    const professor = await db('professors as p')
+      .select(
+        'up.id',
+        'up.name as name',
+        'up.lastname as lastName',
+        'up.mothername as motherName',
+        'up.email as email',
+        'up.code as code',
+        'up.phone as phone',
+        'p.degree as degree',
+        db.raw("CONCAT(up.name, ' ', up.lastname, ' ', up.mothername) as fullname")
+      )
+      .join('user_profile as up', 'p.id', '=', 'up.id')
+      .where('up.id', id)
+      .first();
+    return professor;
+  } catch (error) {
+    logger.error(`Error in getProfessorById for id: ${id}`);
+    throw new Error(`Unable to retrieve professor with id: ${id}`);
   }
 };

@@ -1,9 +1,6 @@
 import Joi from 'joi';
 
 export const professorSchema = Joi.object({
-  id: Joi.string().required().messages({
-    'any.required': 'El Id es requerido',
-  }),
   name: Joi.string().required().messages({
     'any.required': 'El nombre es requerido',
   }),

@@ -30,7 +30,6 @@ export async function runMigrations(): Promise<void> {
       message: error.message,
       stack: error.stack || '',
     });
-    process.exit(1);
   } finally {
     try {
       await db.destroy();
