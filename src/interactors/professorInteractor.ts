@@ -3,7 +3,9 @@ import * as UserRoleService from '../services/userRoleService';
 import { buildLogger } from '../plugin/logger';
 import createUserRequest from '../dtos/createUserRequest';
 import { NotFoundError } from '../errors/notFoundError';
-
+import createProfessorRequest from '../dtos/createProfessorRequest';
+import { createProfessorService } from '../services/professorService';
+import * as userProfileService from '../services/userProfileService';
 const logger = buildLogger('professorInteractor');
 
 const professorRole = 2;
@@ -21,19 +23,13 @@ export const getProfessors = async () => {
   return professors;
 };
 
-export const createProfessor = async (professorData: createUserRequest) => {
+export const createProfessor = async (professorData: createProfessorRequest) => {
   try {
-    const newProfessor = await UserService.createUser(professorData);
-
-    if (!newProfessor) {
-      throw new Error('Error creating the professor');
-    }
-
-    const { id } = newProfessor;
-    const userRole = await UserRoleService.createUserRole(id, professorRole);
-    if (!userRole) {
-      throw new Error('Error creating the Professor Role');
-    }
+    logger.info('Creating professor with data:', { professorData });
+    const newUserProfile = await userProfileService.createUserProfile(professorData);
+    const { id } = newUserProfile;
+    professorData.id = id;
+    const newProfessor = await createProfessorService(professorData);
     return newProfessor;
   } catch (error) {
     console.error('Error in createProfessor interactor:', error);
