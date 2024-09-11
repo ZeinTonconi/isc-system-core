@@ -1,7 +1,7 @@
 import winston from 'winston';
 
 interface LogMetadata {
-  [key: string]: string | number | boolean | Date | LogMetadata;
+  [key: string]: string | number | boolean | Date | LogMetadata | object | LogMetadata[];
 }
 
 const logFormat = winston.format.combine(
