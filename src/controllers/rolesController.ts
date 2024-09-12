@@ -24,9 +24,9 @@ export const createRol = async (req: Request, res: Response) => {
   try {
     const rol = await RolesInteractor.createRol(newRol);
     if (!rol) {
-      return res.status(404).json({ success: false, message: 'can not create rol' });
+      return res.status(404).json({ success: false, message: 'can not create role' });
     }
-    sendSuccess(res, rol, 'Roles retrieved successfully');
+    sendSuccess(res, rol, 'Role created successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);
@@ -42,7 +42,7 @@ export const editRol = async (req: Request, res: Response) => {
     if (!editedRol) {
       return res.status(404).json({ success: false, message: 'can not edit rol' });
     }
-    sendSuccess(res, editedRol, 'Roles edited successfully');
+    sendSuccess(res, editedRol, 'Role edited successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);
@@ -57,7 +57,7 @@ export const disableRol = async (req: Request, res: Response) => {
     if (!disabledRol) {
       return res.status(404).json({ success: false, message: 'can not delet rol' });
     }
-    sendSuccess(res, disabledRol, 'Roles deleted successfully');
+    sendSuccess(res, disabledRol, 'Role deleted successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);
