@@ -16,10 +16,18 @@ export const getEventIntern = async (eventId: number) => {
       return [];
     }
 
-    const acceptedInterns = listEventInterns?.interns.filter(intern => intern.type === 'accepted');
-    const pendingInterns = listEventInterns?.interns.filter(intern => intern.type === 'pending');
-    const reserveInterns = listEventInterns?.interns.filter(intern => intern.type === 'reserve');
-    const rejectedInterns = listEventInterns?.interns.filter(intern => intern.type === 'rejected');
+    const acceptedInterns = listEventInterns?.interns.filter(
+      (intern: any) => intern.type === 'accepted'
+    );
+    const pendingInterns = listEventInterns?.interns.filter(
+      (intern: any) => intern.type === 'pending'
+    );
+    const reserveInterns = listEventInterns?.interns.filter(
+      (intern: any) => intern.type === 'reserve'
+    );
+    const rejectedInterns = listEventInterns?.interns.filter(
+      (intern: any) => intern.type === 'rejected'
+    );
 
     pendingInterns.sort((a: any, b: any) => {
       if (a.pending_hours !== b.pending_hours) {
