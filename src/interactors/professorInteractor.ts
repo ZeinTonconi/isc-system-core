@@ -1,12 +1,11 @@
 import * as UserService from '../services/userService';
-import * as UserRoleService from '../services/userRoleService';
+
 import { buildLogger } from '../plugin/logger';
-import createUserRequest from '../dtos/createUserRequest';
 import { NotFoundError } from '../errors/notFoundError';
-
+import createProfessorRequest from '../dtos/createProfessorRequest';
+import { createProfessorService } from '../services/professorService';
+import * as userProfileService from '../services/userProfileService';
 const logger = buildLogger('professorInteractor');
-
-const professorRole = 2;
 
 export const getProfessors = async () => {
   logger.debug('Fetching professors');
@@ -21,22 +20,31 @@ export const getProfessors = async () => {
   return professors;
 };
 
-export const createProfessor = async (professorData: createUserRequest) => {
+export const createProfessor = async (professorData: createProfessorRequest) => {
   try {
-    const newProfessor = await UserService.createUser(professorData);
-
-    if (!newProfessor) {
-      throw new Error('Error creating the professor');
-    }
-
-    const { id } = newProfessor;
-    const userRole = await UserRoleService.createUserRole(id, professorRole);
-    if (!userRole) {
-      throw new Error('Error creating the Professor Role');
-    }
+    logger.info('Creating professor with data:', { professorData });
+    const newUserProfile = await userProfileService.createUserProfile(professorData);
+    const { id } = newUserProfile;
+    professorData.id = id;
+    const newProfessor = await createProfessorService(professorData);
     return newProfessor;
   } catch (error) {
     console.error('Error in createProfessor interactor:', error);
     throw new Error('Error creating the professor');
+  }
+};
+
+export const getProfessorById = async (id: string) => {
+  logger.debug('Fetching professor by id:', { id });
+  try {
+    const professor = await UserService.getProfessorById(id);
+    logger.debug('Professor fetched successfully:', { id });
+    return professor;
+  } catch (error) {
+    logger.error('Error in getProfessorById interactor:', {
+      id,
+      message: (error as Error).message,
+    });
+    throw new Error(`Error fetching the professor with id: ${id}`);
   }
 };

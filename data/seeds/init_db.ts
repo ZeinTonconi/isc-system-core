@@ -5,8 +5,10 @@ const permissionCategoriesTable = 'permission_categories';
 const permissionsTable = 'permissions'
 
 const professorTable = 'professors';
-const internTable = 'interns';
+const permissionCategoriesTable = 'permission_categories';
+const permissionsTable = 'permissions'
 const eventTable = 'events';
+const internsTable = 'interns';
 const eventInternTable = 'events_interns';
 
 exports.seed = async function (knex: Knex) {
@@ -15,7 +17,7 @@ exports.seed = async function (knex: Knex) {
   await knex(userProfileTable).del();
   await knex(permissionCategoriesTable).del();
   await knex(professorTable).del();
-  await knex(permissionsTable).del();
+  await knex(permissionCategoriesTable).del();
   await knex(internTable).del();
   await knex(eventTable).del();
   await knex(eventInternTable).del();
@@ -91,7 +93,6 @@ exports.seed = async function (knex: Knex) {
     department: 'Computer Science',
     specialty: 'Artificial Intelligence',
   });
-
   await knex(internTable).insert([
     {
       id: 1,
@@ -184,24 +185,4 @@ exports.seed = async function (knex: Knex) {
       type: 'reserve',
     },
   ]);
-
-  // // llenar la tabla de permisos
-  // await knex('permissions').insert([
-  //   { id: 1, description: 'dashboard' },
-  //   { id: 2, description: 'events' },
-  //   { id: 3, description: 'permissions' },
-  //   { id: 4, description: 'roles' },
-  //   { id: 4, description: 'roles' },
-  // ]);
-  // return knex('stages')
-  //   .del()
-  //   .then(function () {
-  //     return knex('stages').insert([
-  //       { id: 1, description: 'Inscripción' },
-  //       { id: 2, description: 'Tutor' },
-  //       { id: 3, description: 'Revisor' },
-  //       { id: 4, description: 'Defensa Interna' },
-  //       { id: 5, description: 'Defensa Externa' },
-  //     ]);
-  //   });
 };

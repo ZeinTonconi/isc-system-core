@@ -72,3 +72,19 @@ export const getUserByRol = async (rolId: number) => {
     throw new Error('Error occurred while fetching users');
   }
 };
+
+export const getProfessorById = async (id: string) => {
+  try {
+    logger.debug('Fetching professor by id:', { id });
+    const professor = await UserRepository.getProfessorById(id);
+    if (!professor) {
+      logger.info('No professor found');
+      throw new Error('No professor found');
+    }
+    logger.info('Professor fetched successfully', { professor });
+    return professor;
+  } catch (error) {
+    console.error('Error in getProfessorById interactor:', error);
+    throw new Error('Error fetching the professor');
+  }
+};

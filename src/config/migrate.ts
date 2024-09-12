@@ -8,7 +8,19 @@ const db = knex(config);
 
 const logger = buildLogger('userService');
 
+async function checkDatabaseConnection(): Promise<void> {
+  try {
+    await db.raw('SELECT 1+1 AS result');
+    logger.info(`[${environment}] Database connection successful`);
+  } catch (err) {
+    const error = err as Error;
+    logger.error(`[${environment}] Database connection failed: ${error.message}`);
+    throw error;
+  }
+}
+
 export async function runMigrations(): Promise<void> {
+  await checkDatabaseConnection();
   try {
     await db.migrate.latest();
     logger.info(`[${environment}] Migrations ran successfully at ${new Date().toISOString()}`);
@@ -18,7 +30,6 @@ export async function runMigrations(): Promise<void> {
       message: error.message,
       stack: error.stack || '',
     });
-    process.exit(1);
   } finally {
     try {
       await db.destroy();
