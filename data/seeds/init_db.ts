@@ -138,16 +138,19 @@ exports.seed = async function (knex: Knex) {
       intern_id: 1,
       event_id: 1,
       type: 'accepted',
+      worked_hours: 20,
     },
     {
       intern_id: 2,
       event_id: 2,
       type: 'pending',
+      worked_hours: 20,
     },
     {
       intern_id: 3,
       event_id: 3,
       type: 'reserve',
+      worked_hours: 20,
     },
   ]);
 

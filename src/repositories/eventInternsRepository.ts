@@ -4,7 +4,7 @@ const tableName = 'events_interns';
 
 export const getEventInterns = async (eventId: number) => {
   try {
-    const query = db('events as e')
+    const listEventInterns = await db('events as e')
       .leftJoin(`${tableName} as ei`, 'ei.event_id', 'e.id')
       .leftJoin('interns as i', 'ei.intern_id', 'i.id')
       .leftJoin('user_profile as up', 'i.user_profile_id', 'up.id')
@@ -27,9 +27,6 @@ export const getEventInterns = async (eventId: number) => {
       )
       .where('e.id', eventId)
       .groupBy('e.id');
-    console.log('query: ', query.toSQL().sql);
-    const listEventInterns = await query;
-    console.log(listEventInterns, 'repo');
     return listEventInterns;
   } catch (error) {
     console.error('Error in EventInternsRepository.getEventInterns', error);
