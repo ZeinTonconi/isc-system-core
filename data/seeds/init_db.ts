@@ -1,9 +1,9 @@
 import { Knex } from 'knex';
-const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
 const permissionCategoriesTable = 'permission_categories';
+const rolesTable = 'roles';
+const rolesPermissionsTable = 'role_permissions'
 const permissionsTable = 'permissions'
-
 const professorTable = 'professors';
 const internTable = 'interns';
 const eventTable = 'events';
@@ -19,6 +19,7 @@ exports.seed = async function (knex: Knex) {
   await knex(internTable).del();
   await knex(eventTable).del();
   await knex(eventInternTable).del();
+  await knex(rolesPermissionsTable).del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
@@ -72,6 +73,14 @@ exports.seed = async function (knex: Knex) {
     { id: 22, description: 'Add a user', display_name: 'Usuarios', path: '/users', sort: 5, type: 'page', disabled: 'false', name: 'Agregar usuario', category_id: 5 },
 
   ])
+  await knex(rolesPermissionsTable).insert([
+    { role_id: 1, permission_id: 1 },
+    { role_id: 1, permission_id: 2},
+    { role_id: 1, permission_id: 6},
+    { role_id: 1, permission_id: 12},
+    { role_id: 1, permission_id: 18},
+  ]);
+
   await knex('user_profile').insert({
     id: 2,
     username: 'professor',
