@@ -12,7 +12,9 @@
     "migrate:latest": "knex migrate:latest",
     "seed:make": "knex seed:make",
     "seed:run": "knex seed:run",
-    "lint": "eslint . --ext .ts --fix" 
+    "lint": "eslint . --ext .ts --fix",
+    "lint:fix": "eslint --fix ."
+
   },
   "keywords": [],
   "author": "",

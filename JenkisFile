@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'node-20'
+    }
+    stages {
+        stage('Clone Project') {
+            steps {
+                git 'https://github.com/ZeinTonconi/isc-system-core.git'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('eslint') {
+            steps {
+                sh 'npm run lint:fix'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+    }
+}
