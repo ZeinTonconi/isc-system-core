@@ -4,10 +4,10 @@ const tableName = 'events_interns';
 
 export const getEventInterns = async (eventId: number) => {
   try {
-    const listEventInterns = await db(`${tableName} as ei`)
-      .join('events as e', 'ei.event_id', 'e.id')
-      .join('interns as i', 'ei.intern_id', 'i.id')
-      .join('user_profile as up', 'i.user_profile_id', 'up.id')
+    const query = db('events as e')
+      .leftJoin(`${tableName} as ei`, 'ei.event_id', 'e.id')
+      .leftJoin('interns as i', 'ei.intern_id', 'i.id')
+      .leftJoin('user_profile as up', 'i.user_profile_id', 'up.id')
       .select(
         'e.id as id_events',
         'e.*',
@@ -25,8 +25,11 @@ export const getEventInterns = async (eventId: number) => {
           'last_update', "ei"."updated_at"
         )) as interns`)
       )
-      .where('ei.event_id', eventId)
+      .where('e.id', eventId)
       .groupBy('e.id');
+    console.log('query: ', query.toSQL().sql);
+    const listEventInterns = await query;
+    console.log(listEventInterns, 'repo');
     return listEventInterns;
   } catch (error) {
     console.error('Error in EventInternsRepository.getEventInterns', error);
