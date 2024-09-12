@@ -4,26 +4,29 @@ const tableName = 'events_interns';
 
 export const getEventInterns = async (eventId: number) => {
   try {
-    const query = db(`${tableName} as ei`)
+    const listEventInterns = await db(`${tableName} as ei`)
       .join('events as e', 'ei.event_id', 'e.id')
       .join('interns as i', 'ei.intern_id', 'i.id')
       .join('user_profile as up', 'i.user_profile_id', 'up.id')
       .select(
         'e.id as id_events',
-        'i.id as id_interns',
         'e.*',
-        'i.*',
-        'up.name',
-        'up.lastname',
-        'up.mothername',
-        'up.code',
-        'ei.type',
-        'ei.created_at as registration_date',
-        'ei.updated_at as last_update'
+        db.raw(`array_agg(json_build_object(
+          'id_interns', "i"."id",
+          'name', "up"."name",
+          'lastname', "up"."lastname",
+          'mothername', "up"."mothername",
+          'code', "up"."code",
+          'type', "ei"."type",
+          'total_hours', "i"."total_hours",
+          'pending_hours', "i"."pending_hours",
+          'completed_hours', "i"."completed_hours",
+          'registration_date', "ei"."created_at",
+          'last_update', "ei"."updated_at"
+        )) as interns`)
       )
-      .where('ei.event_id', eventId);
-    console.log('sql query', query.toSQL().sql);
-    const listEventInterns = await query;
+      .where('ei.event_id', eventId)
+      .groupBy('e.id');
     return listEventInterns;
   } catch (error) {
     console.error('Error in EventInternsRepository.getEventInterns', error);
