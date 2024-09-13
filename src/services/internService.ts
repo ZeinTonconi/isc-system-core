@@ -4,6 +4,7 @@ import {
   getRecordIntern,
   getInformationIntern,
   getListIntern,
+  getInternsByUserId
 } from '../repositories/internsRepository';
 
 export const updateHours = async (internId: number, type: string, duration_hours: number) => {
@@ -25,6 +26,15 @@ export const updateHours = async (internId: number, type: string, duration_hours
   }
 };
 
+export const getInternByUserId = async (userId: number) => {
+  try {
+    const intern = await getInternsByUserId(userId);
+    return intern;
+  } catch (error) {
+    console.error('Error in InternsService.getInternById:', error);
+    throw new Error('Error fetching Interns');
+  }
+};
 export const getInternById = async (internId: number) => {
   try {
     const event = await getInternsById(internId);

@@ -24,6 +24,20 @@ export const updateHoursInterns = async (
     throw new Error('Error Update Hours Interns');
   }
 };
+
+export const getInternsByUserId = async(userId: number) => {
+  try {
+    const infoIntern = await db(`${tableName} as in`)
+      .join('user_profile as up', 'in.user_profile_id', 'up.id')
+      .select('up.*',"in.id as id_intern", 'in.*')
+      .where('in.user_profile_id',userId)
+      .first();
+    return infoIntern;
+  } catch (error) {
+    console.error('Error in InternsRepository.getRecordIntern', error);
+    throw new Error('Error fetching Interns');
+  }
+}
 export const getInternsById = async (internId: number) => {
   try {
     const event = await db(tableName).where('id', internId).first();
@@ -71,7 +85,7 @@ export const getListIntern = async () => {
   try {
     const infoIntern = await db(`${tableName} as in`)
       .join('user_profile as up', 'in.user_profile_id', 'up.id')
-      .select('up.*', 'in.*')
+      .select('up.*','in.id as id_intern', 'in.*')
     return infoIntern;
   } catch (error) {
     console.error('Error in InternsRepository.getRecordIntern', error);
