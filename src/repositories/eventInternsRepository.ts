@@ -69,13 +69,14 @@ export const getEventInternsByTwoId = async (eventId: number, internId: number) 
   }
 };
 
-export const registerInternProcess = async (eventId: number, internId: number) => {
+export const registerInternProcess = async (eventId: number, internId: number, assigned_hours: number) => {
   try {
     const registerInterns = await db(tableName)
       .insert({
         event_id: eventId,
         intern_id: internId,
         type: 'pending',
+        worked_hours: assigned_hours
       })
       .returning('*');
     return registerInterns;

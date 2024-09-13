@@ -8,6 +8,7 @@ import {
   getEventInternsByTwoId,
   getEventInformation,
 } from '../repositories/eventInternsRepository';
+import { getEventsByIdService } from './eventsService';
 
 export const getEventIntern = async (eventId: number) => {
   try {
@@ -66,7 +67,8 @@ export const getEventsInternById = async (eventId: number, internId: number) => 
 
 export const registerIntern = async (eventId: number, internId: number) => {
   try {
-    const registerInterns = await registerInternProcess(eventId, internId);
+    const {assigned_hours} = await getEventsByIdService(eventId.toString())
+    const registerInterns = await registerInternProcess(eventId, internId, assigned_hours);
     return registerInterns;
   } catch (error) {
     console.error('Error in EventInternsService.registerInternProcess', error);
