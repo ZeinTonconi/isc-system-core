@@ -66,3 +66,15 @@ export const getInformationIntern = async (internId: number) => {
     throw new Error('Error fetching Interns');
   }
 };
+
+export const getListIntern = async () => {
+  try {
+    const infoIntern = await db(`${tableName} as in`)
+      .join('user_profile as up', 'in.user_profile_id', 'up.id')
+      .select('up.*', 'in.*')
+    return infoIntern;
+  } catch (error) {
+    console.error('Error in InternsRepository.getRecordIntern', error);
+    throw new Error('Error fetching Interns');
+  }
+};
