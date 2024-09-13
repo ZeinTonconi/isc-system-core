@@ -75,7 +75,7 @@ exports.seed = async function (knex: Knex) {
     password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
     email: 'director@gmail.com',
     phone: '12345678',
-    role_id: 2,
+    role_id: 5,
     code: '12345',
   });
   await knex(userProfileTable).insert({
@@ -87,7 +87,7 @@ exports.seed = async function (knex: Knex) {
     password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
     email: 'supervisor@gmail.com',
     phone: '12345678',
-    role_id: 2,
+    role_id: 6,
     code: '12345',
   });
 
