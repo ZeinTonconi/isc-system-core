@@ -12,7 +12,7 @@ export const getEventInterns = async (eventId: number) => {
         'e.id as id_events',
         'e.*',
         db.raw(`array_agg(json_build_object(
-          'id_interns', "i"."id",
+          'id_intern', "i"."id",
           'name', "up"."name",
           'lastname', "up"."lastname",
           'mothername', "up"."mothername",
