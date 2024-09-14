@@ -157,7 +157,7 @@ exports.seed = async function (knex: Knex) {
     },
     {
       id: 3,
-      user_profile_id: 2,
+      user_profile_id: 3,
       total_hours: 20,
       pending_hours: 10,
       completed_hours: 10,
