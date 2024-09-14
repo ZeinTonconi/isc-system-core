@@ -1,6 +1,7 @@
 import db from "./pg-connection";
 const userProfileTable = 'user_profile';
 const userRolesTable = 'user_roles';
+const tablePermissions = 'permissions'
 
 export const getRoleAndPermissions = async (id: number) => {
   try {
@@ -61,4 +62,24 @@ export const getRoleAndPermissions = async (id: number) => {
     console.error('Error in GenericRoleRepository.getRoleAndPermissions:', error);
     throw new Error('Error fetching Roles and Permissions');
   }
-}
+};
+
+export const getPermissions = async () => {
+  try {
+    const permissions = db(tablePermissions).returning('*');
+    return permissions;
+  } catch (error){
+    console.error('Error in GenericRoleRepository.getPermissions:', error);
+    throw new Error('Error fetching Permissions');
+  }
+};
+
+export const getPermissionByID = async (id: number) => {
+  try {
+    const permission = db(tablePermissions).where('id',id).returning('*');
+    return permission;
+  } catch (error){
+    console.error('Error in GenericRoleRepository.getPermissionByID:', error);
+    throw new Error('Error fetching Permission');
+  }
+};
