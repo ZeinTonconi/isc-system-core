@@ -1,3 +1,4 @@
+import EventInterns from '../models/eventsInternsInterface';
 import {
   getEventInterns,
   registerInternProcess,
@@ -7,6 +8,7 @@ import {
   updateInternAttendance,
   getEventInternsByTwoId,
   getEventInformation,
+  updateEventInternsRepository,
 } from '../repositories/eventInternsRepository';
 import { getEventsByIdService } from './eventsService';
 
@@ -67,7 +69,7 @@ export const getEventsInternById = async (eventId: number, internId: number) => 
 
 export const registerIntern = async (eventId: number, internId: number) => {
   try {
-    const {assigned_hours} = await getEventsByIdService(eventId.toString())
+    const { assigned_hours } = await getEventsByIdService(eventId.toString());
     const registerInterns = await registerInternProcess(eventId, internId, assigned_hours);
     return registerInterns;
   } catch (error) {
@@ -131,5 +133,19 @@ export const getEventInformations = async () => {
   } catch (error) {
     console.error('Error in EventInternsService.getEventIntern', error);
     throw new Error('Error fetching ListEventInterns');
+  }
+};
+
+export const updateEventInternService = async (
+  eventId: number,
+  internId: number,
+  eventIntern: EventInterns
+) => {
+  try {
+    const updatedRow = await updateEventInternsRepository(eventId, internId, eventIntern);
+    return updatedRow;
+  } catch (error) {
+    console.error('Error in EventInternsService.updateEventInternService', error);
+    throw new Error('Error updating EventIntern');
   }
 };
