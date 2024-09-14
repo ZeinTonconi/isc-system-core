@@ -6,7 +6,7 @@ import {
   getInformationsIntern,
   getMyEventsInternService,
   getListInterns,
-  getInternByUserId
+  getInternByUserId,
 } from '../services/internService';
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
@@ -41,7 +41,7 @@ export const getInternsByUserId = async (req: Request, res: Response) => {
       handleError(res, error);
     }
   }
-}
+};
 export const getInternsById = async (req: Request, res: Response) => {
   try {
     const { intern_id } = req.params;
@@ -114,4 +114,4 @@ export const getInternsController = async (req: Request, res: Response) => {
       handleError(res, error);
     }
   }
-}
+};

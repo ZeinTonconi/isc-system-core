@@ -33,7 +33,7 @@ export const createEvent = async (event: Event) => {
   }
 };
 
-export const updateEvent = async (event: Event, id: string) => {
+export const updateEvent = async (event: Partial<Event>, id: string) => {
   try {
     const eventResponse = await db(tableName).where('id', id).update(event).returning('*');
     return eventResponse;
