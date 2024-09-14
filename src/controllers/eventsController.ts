@@ -78,7 +78,6 @@ export const finishEventController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const event = await finishEventService(parseInt(id));
-    console.log(event, 'finish evnet');
     sendSuccess(res, event, 'Event finished succesfully');
   } catch (error) {
     if (error instanceof Error) {
