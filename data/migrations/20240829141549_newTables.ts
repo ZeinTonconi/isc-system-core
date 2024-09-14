@@ -56,6 +56,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tableNameEvents)
         .onDelete('CASCADE');
+      table.integer('worked_hours').notNullable();
       table.enu('type', ['accepted', 'rejected', 'pending', 'reserve']).notNullable();
       table.boolean('attendance').defaultTo(false);
       table.string('notes');

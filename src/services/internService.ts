@@ -3,6 +3,8 @@ import {
   getInternsById,
   getRecordIntern,
   getInformationIntern,
+  getListIntern,
+  getInternsByUserId
 } from '../repositories/internsRepository';
 
 export const updateHours = async (internId: number, type: string, duration_hours: number) => {
@@ -24,6 +26,15 @@ export const updateHours = async (internId: number, type: string, duration_hours
   }
 };
 
+export const getInternByUserId = async (userId: number) => {
+  try {
+    const intern = await getInternsByUserId(userId);
+    return intern;
+  } catch (error) {
+    console.error('Error in InternsService.getInternById:', error);
+    throw new Error('Error fetching Interns');
+  }
+};
 export const getInternById = async (internId: number) => {
   try {
     const event = await getInternsById(internId);
@@ -80,3 +91,13 @@ export const getMyEventsInternService = async (internId: number) => {
     throw new Error('Error fetching Interns');
   }
 };
+
+export const getListInterns = async() => {
+  try {
+    const listInterns = await getListIntern();
+    return listInterns;
+  } catch (error) {
+    console.error('Error in InternsService.getRecordInterns:', error);
+    throw new Error('Error fetching Interns');
+  }
+}

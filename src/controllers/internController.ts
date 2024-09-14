@@ -5,6 +5,8 @@ import {
   getRecordInterns,
   getInformationsIntern,
   getMyEventsInternService,
+  getListInterns,
+  getInternByUserId
 } from '../services/internService';
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
@@ -25,6 +27,20 @@ export const updateHoursController = async (req: Request, res: Response) => {
   }
 };
 
+export const getInternsByUserId = async (req: Request, res: Response) => {
+  try {
+    const { user_id } = req.params;
+    const intern = await getInternByUserId(parseInt(user_id, 10));
+    if (!intern) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
+    }
+    sendSuccess(res, intern, 'Interns retrieved succesfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+}
 export const getInternsById = async (req: Request, res: Response) => {
   try {
     const { intern_id } = req.params;
@@ -84,3 +100,17 @@ export const getMyEventsInternController = async (req: Request, res: Response) =
     }
   }
 };
+
+export const getInternsController = async (req: Request, res: Response) => {
+  try {
+    const listIntern = await getListInterns();
+    if (!listIntern) {
+      return res.status(404).json({ success: false, message: 'Interns process not found' });
+    }
+    sendSuccess(res, listIntern, 'Events retrieved succesfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+}
