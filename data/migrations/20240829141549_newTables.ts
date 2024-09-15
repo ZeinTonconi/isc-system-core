@@ -27,8 +27,7 @@ export async function up(knex: Knex): Promise<void> {
         .unsigned()
         .references('id')
         .inTable('interns')
-        .onDelete('CASCADE')
-        .nullable;
+        .onDelete('CASCADE').nullable;
       table.string('title');
       table.string('description');
       table.string('location');

@@ -1,12 +1,12 @@
 import { Knex } from 'knex';
-const rolesTable = 'roles';
 const userProfileTable = 'user_profile';
 const permissionCategoriesTable = 'permission_categories';
+const rolesTable = 'roles';
+const rolesPermissionsTable = 'role_permissions'
 const permissionsTable = 'permissions'
-
 const professorTable = 'professors';
-const internTable = 'interns';
 const eventTable = 'events';
+const internsTable = 'interns';
 const eventInternTable = 'events_interns';
 
 exports.seed = async function (knex: Knex) {
@@ -15,10 +15,11 @@ exports.seed = async function (knex: Knex) {
   await knex(userProfileTable).del();
   await knex(permissionCategoriesTable).del();
   await knex(professorTable).del();
-  await knex(permissionsTable).del();
-  await knex(internTable).del();
+  await knex(permissionCategoriesTable).del();
+  await knex(internsTable).del();
   await knex(eventTable).del();
   await knex(eventInternTable).del();
+  await knex(rolesPermissionsTable).del();
 
   await knex(rolesTable).insert([
     { id: 1, name: 'admin' },
@@ -72,6 +73,14 @@ exports.seed = async function (knex: Knex) {
     { id: 22, description: 'Add a user', display_name: 'Usuarios', path: '/users', sort: 5, type: 'page', disabled: 'false', name: 'Agregar usuario', category_id: 5 },
 
   ])
+  await knex(rolesPermissionsTable).insert([
+    { role_id: 1, permission_id: 1 },
+    { role_id: 1, permission_id: 2},
+    { role_id: 1, permission_id: 6},
+    { role_id: 1, permission_id: 12},
+    { role_id: 1, permission_id: 18},
+  ]);
+
   await knex('user_profile').insert({
     id: 2,
     username: 'professor',
@@ -91,8 +100,7 @@ exports.seed = async function (knex: Knex) {
     department: 'Computer Science',
     specialty: 'Artificial Intelligence',
   });
-
-  await knex(internTable).insert([
+  await knex(internsTable).insert([
     {
       id: 1,
       user_profile_id: 1,
@@ -184,24 +192,4 @@ exports.seed = async function (knex: Knex) {
       type: 'reserve',
     },
   ]);
-
-  // // llenar la tabla de permisos
-  // await knex('permissions').insert([
-  //   { id: 1, description: 'dashboard' },
-  //   { id: 2, description: 'events' },
-  //   { id: 3, description: 'permissions' },
-  //   { id: 4, description: 'roles' },
-  //   { id: 4, description: 'roles' },
-  // ]);
-  // return knex('stages')
-  //   .del()
-  //   .then(function () {
-  //     return knex('stages').insert([
-  //       { id: 1, description: 'Inscripción' },
-  //       { id: 2, description: 'Tutor' },
-  //       { id: 3, description: 'Revisor' },
-  //       { id: 4, description: 'Defensa Interna' },
-  //       { id: 5, description: 'Defensa Externa' },
-  //     ]);
-  //   });
 };

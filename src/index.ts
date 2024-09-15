@@ -3,7 +3,7 @@ import { runMigrations } from './config/migrate';
 import app from './app';
 
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 runMigrations()
   .then(() => {
@@ -13,5 +13,5 @@ runMigrations()
   })
   .catch(err => {
     console.error('Failed to run migrations:', err);
-    process.exit(1); // Sale del proceso si las migraciones fallan
+    process.exit(1);
   });

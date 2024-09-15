@@ -73,27 +73,21 @@ export const createUser = async (userData: User) => {
 
 export const getProfessors = async () => {
   try {
+    // TODO: fix getting tutorias and revisiones
     logger.debug('Fetching professors');
-    const professors = await db('users as u')
+    const professors = await db('professors as p')
       .select(
-        'u.id',
-        'u.name as name',
-        'u.lastname as lastName',
-        'u.mothername as motherName',
-        'u.email as email',
-        'u.code as code',
-        'u.phone as phone',
-        'u.degree as degree',
-        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.tutor_id = u.id) AS tutoring_count'),
-        db.raw('COUNT(DISTINCT gp.id) FILTER (WHERE gp.reviewer_id = u.id) AS review_count'),
-        db.raw("CONCAT(u.name, ' ', u.lastname, ' ', u.mothername) as fullname")
+        'up.id',
+        'up.name as name',
+        'up.lastname as lastName',
+        'up.mothername as motherName',
+        'up.email as email',
+        'up.code as code',
+        'up.phone as phone',
+        'p.degree as degree',
+        db.raw("CONCAT(up.name, ' ', up.lastname, ' ', up.mothername) as fullname")
       )
-      .join('user_roles as ur', 'u.id', '=', 'ur.user_id')
-      .leftJoin('graduation_process as gp', function (this: any) {
-        this.on('gp.tutor_id', '=', 'u.id').orOn('gp.reviewer_id', '=', 'u.id');
-      })
-      .where('ur.role_id', UserRole.PROFESSOR.id)
-      .groupBy('u.id');
+      .join('user_profile as up', 'p.id', '=', 'up.id');
     logger.info('Professors fetched successfully.');
     logger.debug(`Fetched professors: ${JSON.stringify(professors)}`);
     return professors;
@@ -145,5 +139,34 @@ export const getUserByRol = async (rolId: number) => {
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
+  }
+};
+
+/**
+ * Get professor by id
+ * @param id Professor id
+ * @returns Professor data
+ */
+export const getProfessorById = async (id: string) => {
+  try {
+    const professor = await db('professors as p')
+      .select(
+        'up.id',
+        'up.name as name',
+        'up.lastname as lastName',
+        'up.mothername as motherName',
+        'up.email as email',
+        'up.code as code',
+        'up.phone as phone',
+        'p.degree as degree',
+        db.raw("CONCAT(up.name, ' ', up.lastname, ' ', up.mothername) as fullname")
+      )
+      .join('user_profile as up', 'p.id', '=', 'up.id')
+      .where('up.id', id)
+      .first();
+    return professor;
+  } catch (error) {
+    logger.error(`Error in getProfessorById for id: ${id}`);
+    throw new Error(`Unable to retrieve professor with id: ${id}`);
   }
 };
