@@ -8,9 +8,24 @@ import {
   updateInternsAttendance,
   getEventInformations,
   updateEventInternService,
+  getEventsInternById,
 } from '../services/eventInternsService';
 import { sendCreated, sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
+
+
+export const getEventInternController = async (req: Request, res: Response) => {
+  try {
+    const { id_evento, id_becario} = req.params;
+    const result = await getEventsInternById(parseInt(id_evento, 10), parseInt(id_becario, 10));
+    sendSuccess(res, result, 'Event_Interns process retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
 
 export const getEventInternsController = async (req: Request, res: Response) => {
   try {

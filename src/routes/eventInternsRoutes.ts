@@ -9,6 +9,7 @@ import {
   updateAttendanceController,
   getEventInformationsController,
   updateEventInternController,
+  getEventInternController,
 } from '../controllers/eventInternsController';
 
 const router = Router();
@@ -26,5 +27,5 @@ router
   .route('/:id_evento/confirm_attendance/:id_becario')
   .put(checkUserAuth, updateAttendanceController);
 router.route('/register-information').get(checkUserAuth, getEventInformationsController);
-
+router.route('/:id_evento/status/:id_becario').get(checkUserAuth, getEventInternController)
 export default router;
