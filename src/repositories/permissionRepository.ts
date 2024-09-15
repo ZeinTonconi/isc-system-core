@@ -1,7 +1,10 @@
-import db from "./pg-connection";
+import db from './pg-connection';
+import PermissionCategoryResponse from '../models/permissionCategoryResponseInterface';
+import PermissionCategory from '../models/PermissionCategoryInterface';
 const userProfileTable = 'user_profile';
 const userRolesTable = 'user_roles';
 const tablePermissions = 'permissions'
+const permissionCatgeoryTable = 'permission_categories';
 
 export const getRoleAndPermissions = async (id: number) => {
   try {
@@ -66,9 +69,22 @@ export const getRoleAndPermissions = async (id: number) => {
 
 export const getPermissions = async () => {
   try {
-    const permissions = db(tablePermissions).returning('*');
-    return permissions;
-  } catch (error){
+    const permissions = await db
+      .select(`${tablePermissions}.*`, `${permissionCatgeoryTable}.name as category_name`)
+      .from(tablePermissions)
+      .innerJoin(permissionCatgeoryTable, `${tablePermissions}.category_id`, `${permissionCatgeoryTable}.id`)
+      .orderBy(`${permissionCatgeoryTable}.name`, 'asc');
+
+    const categorizedPermissions: PermissionCategoryResponse = {};
+    permissions.forEach((permission: PermissionCategory) => {
+      if (!categorizedPermissions[permission.category_name]) {
+        categorizedPermissions[permission.category_name] = [];
+      }
+      categorizedPermissions[permission.category_name].push(permission);
+    });
+
+    return categorizedPermissions;
+  } catch (error) {
     console.error('Error in GenericRoleRepository.getPermissions:', error);
     throw new Error('Error fetching Permissions');
   }
