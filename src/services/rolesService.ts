@@ -10,16 +10,11 @@ export const getRoles = async (rolName: string) => {
     Object.keys(roles).forEach(roleName => {
       const rolePermissions = roles[roleName];
       if (
-        rolName &&
-        roleName.toLowerCase().startsWith(rolName.toLowerCase()) &&
-        !rolePermissions.disabled
+        (rolName &&
+          roleName.toLowerCase().startsWith(rolName.toLowerCase()) &&
+          !rolePermissions.disabled) ||
+        (!rolName && !rolePermissions.disabled)
       ) {
-        response[roleName] = {
-          id: rolePermissions.id,
-          disabled: rolePermissions.disabled,
-          permissions: rolePermissions.permissions,
-        };
-      } else if (!rolePermissions.disabled) {
         response[roleName] = {
           id: rolePermissions.id,
           disabled: rolePermissions.disabled,
