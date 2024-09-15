@@ -7,6 +7,7 @@ import {
   getMyEventsInternService,
   getListInterns,
   getInternByUserId,
+  getAllDataInternsService,
 } from '../services/internService';
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
@@ -109,6 +110,20 @@ export const getInternsController = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Interns process not found' });
     }
     sendSuccess(res, listIntern, 'Events retrieved succesfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const getAllDataInternsControlller = async (req: Request, res: Response) => {
+  try {
+    const listIntern = await getAllDataInternsService();
+    if (!listIntern) {
+      return res.status(404).json({ success: false, message: 'Interns not found' });
+    }
+    sendSuccess(res, listIntern, 'Interns with full data retrieved succesfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);

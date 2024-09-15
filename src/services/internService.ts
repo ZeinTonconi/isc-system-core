@@ -4,7 +4,8 @@ import {
   getRecordIntern,
   getInformationIntern,
   getListIntern,
-  getInternsByUserId
+  getInternsByUserId,
+  getAllDataInternsRepository,
 } from '../repositories/internsRepository';
 
 export const updateHours = async (internId: number, type: string, duration_hours: number) => {
@@ -92,7 +93,7 @@ export const getMyEventsInternService = async (internId: number) => {
   }
 };
 
-export const getListInterns = async() => {
+export const getListInterns = async () => {
   try {
     const listInterns = await getListIntern();
     return listInterns;
@@ -100,4 +101,51 @@ export const getListInterns = async() => {
     console.error('Error in InternsService.getRecordInterns:', error);
     throw new Error('Error fetching Interns');
   }
-}
+};
+
+export const getAllDataInternsService = async () => {
+  try {
+    const interns = await getAllDataInternsRepository();
+
+    const groupedInterns = interns.reduce((acc, item) => {
+      const { id_intern, responsible_intern_id, name, lastname, mothername } = item;
+
+      if (!acc[id_intern]) {
+        acc[id_intern] = {
+          id: item.id_intern,
+          name: name,
+          lastname: lastname,
+          mothername: mothername,
+          full_name: `${name} ${lastname} ${mothername}`,
+          code: item.code,
+          user_profile_id: item.user_profile_id,
+          total_hours: item.total_hours,
+          pending_hours: item.pending_hours,
+          completed_hours: item.completed_hours,
+          created_at: item.created_at,
+          updated_at: item.updated_at,
+          events: [],
+        };
+      }
+
+      const is_supervisor = responsible_intern_id == id_intern;
+
+      acc[id_intern].events.push({
+        event_id: item.event_id,
+        title: item.title,
+        worked_hours: item.worked_hours,
+        type: item.type,
+        attendance: item.attendance,
+        registration_date: item.registration_date,
+        last_update: item.last_update,
+        notes: item.notes || '',
+        is_supervisor: is_supervisor,
+      });
+      return acc;
+    }, []);
+    return Object.values(groupedInterns);
+  } catch (error) {
+    console.error('Error in InternsService.getAllDataInternsService:', error);
+    throw new Error('Error fetching Interns');
+  }
+};
