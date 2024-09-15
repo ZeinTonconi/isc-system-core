@@ -1,3 +1,4 @@
+import UserResponse from '../models/genericUserResponse';
 import { userProfileInterface } from '../models/userProfile';
 import { buildLogger } from '../plugin/logger';
 import db from './pg-connection';
@@ -16,3 +17,32 @@ export const createUserProfile = async (userProfile: userProfileInterface) => {
     throw error;
   }
 };
+
+export const deleteUser = async (userId: number) => {
+  try {
+    await db(TABLE_NAME).where('id', userId).delete();
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+};
+
+export const getUserById = async (userId: number) => {
+  try {
+    const user = await db(TABLE_NAME).where('id', userId).first();
+    return user;
+  } catch (error) {
+    console.error('Error fetching user by id:', error);
+    throw error;
+  }
+};
+
+export const getAllUsers = async(): Promise<UserResponse[] | null> => {
+  try{
+    const users = await db(TABLE_NAME as 'user');
+    return users;
+  }catch(error){
+    console.log('Error getting all users', error);
+    throw error
+  }
+}

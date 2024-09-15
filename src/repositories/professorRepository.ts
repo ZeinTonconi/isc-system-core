@@ -13,7 +13,6 @@ interface professorInterface {
 export const storeProfessor = async (professor: professorInterface) => {
   try {
     const newProfessor = await db(TABLE_NAME).insert(professor).returning('*');
-
     if (!newProfessor) {
       logger.debug('Professor have not created');
     }

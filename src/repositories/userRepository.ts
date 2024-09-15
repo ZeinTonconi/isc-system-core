@@ -63,7 +63,7 @@ export const getStudentByCode = async (userCode: number) => {
 
 export const createUser = async (userData: User) => {
   try {
-    const [newUser] = await db('users').insert(userData).returning('id');
+    const [newUser] = await db('user_profile').insert(userData).returning('id');
     return newUser;
   } catch (error) {
     console.error(error);
@@ -96,26 +96,6 @@ export const getProfessors = async () => {
     throw Error('Error');
   }
 };
-
-export const getUserById = async (userId: number) => {
-  try {
-    const user = await db('user_profile').where('id', userId).first();
-    return user;
-  } catch (error) {
-    console.error('Error fetching user by id:', error);
-    throw error;
-  }
-};
-
-export const deleteUser = async (userId: number) => {
-  try {
-    await db('user_profile').where('id', userId).delete();
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    throw error;
-  }
-};
-
 /**
  * Update user data
  * @param userId User id

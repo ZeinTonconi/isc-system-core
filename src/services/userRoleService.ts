@@ -12,6 +12,18 @@ export const createUserRole = async (userId: number, studentRole: number) => {
   }
 };
 
+export const createUserRoles = async (userId: number, roles: number[]) => {
+  try {
+    const results = await Promise.all(
+      roles.map(roleId => UserRolesRepository.assignUserRole(userId, roleId))
+    );
+    return results.length > 0;
+  } catch (error) {
+    console.log('Error creating User Roles');
+    throw Error('Error creating User Roles');
+  }
+};
+
 export const deleteUserRole = async (userId: number) => {
   try {
     logger.debug(`Attempting to delete user role with user id: ${userId}`);
