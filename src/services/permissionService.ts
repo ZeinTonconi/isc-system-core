@@ -7,4 +7,14 @@ export const getUserRolesAndPermissions = async (id: number):Promise<Permission 
     return null; 
   }
   return rolesAndPermissions;
-}
+};
+
+export const getPermissions = async () => {
+  const permissions = await permissionRepository.getPermissions();
+  return permissions;
+};
+
+export const getPermissionByID = async (id: number) => {
+  const permission = await permissionRepository.getPermissionByID(id);
+  return permission;
+};

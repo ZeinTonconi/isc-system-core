@@ -5,8 +5,6 @@ const rolesTable = 'roles';
 const rolesPermissionsTable = 'role_permissions'
 const permissionsTable = 'permissions'
 const professorTable = 'professors';
-const permissionCategoriesTable = 'permission_categories';
-const permissionsTable = 'permissions'
 const eventTable = 'events';
 const internsTable = 'interns';
 const eventInternTable = 'events_interns';
@@ -18,7 +16,7 @@ exports.seed = async function (knex: Knex) {
   await knex(permissionCategoriesTable).del();
   await knex(professorTable).del();
   await knex(permissionCategoriesTable).del();
-  await knex(internTable).del();
+  await knex(internsTable).del();
   await knex(eventTable).del();
   await knex(eventInternTable).del();
   await knex(rolesPermissionsTable).del();
@@ -102,7 +100,7 @@ exports.seed = async function (knex: Knex) {
     department: 'Computer Science',
     specialty: 'Artificial Intelligence',
   });
-  await knex(internTable).insert([
+  await knex(internsTable).insert([
     {
       id: 1,
       user_profile_id: 1,
