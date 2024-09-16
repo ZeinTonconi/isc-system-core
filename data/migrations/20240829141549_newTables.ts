@@ -35,7 +35,7 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('max_interns');
       table.integer('min_interns');
       table.integer('assigned_hours');
-      table.boolean('is_finished')
+      table.boolean('is_finished').defaultTo(false);
       table.timestamp('start_date');
       table.timestamp('end_date');
       table.timestamp('registration_deadline');
