@@ -10,7 +10,7 @@ import {
   getAllDataInternsService,
   createInternService,
 } from '../services/internService';
-import { sendSuccess } from '../handlers/successHandler';
+import { sendCreated, sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
 
 export const updateHoursController = async (req: Request, res: Response) => {
@@ -139,7 +139,7 @@ export const createInternController = async (req: Request, res: Response) => {
     if (!newIntern) {
       return res.status(404).json({ success: false, message: 'New intern not found' });
     }
-    sendSuccess(res, newIntern, 'Intern created succesfully');
+    sendCreated(res, newIntern, 'Intern created succesfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);
