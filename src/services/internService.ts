@@ -1,3 +1,4 @@
+import Intern from 'src/models/internInterface';
 import {
   updateHoursInterns,
   getInternsById,
@@ -6,7 +7,9 @@ import {
   getListIntern,
   getInternsByUserId,
   getAllDataInternsRepository,
+  getSupervisor,
 } from '../repositories/internsRepository';
+import { createInternInteractor } from '../interactors/internInteractor';
 
 export const updateHours = async (internId: number, type: string, duration_hours: number) => {
   try {
@@ -105,14 +108,17 @@ export const getListInterns = async () => {
 
 export const getAllDataInternsService = async () => {
   try {
+    const eventComplete = await getSupervisor();
     const interns = await getAllDataInternsRepository();
 
-    const groupedInterns = interns.reduce((acc, item) => {
-      const { id_intern, responsible_intern_id, name, lastname, mothername } = item;
+    const unionEventIntern = [...eventComplete,...interns]
+
+    const groupedInterns = unionEventIntern.reduce((acc, item) => {
+      const {id, id_intern, responsible_intern_id, name, lastname, mothername } = item;
 
       if (!acc[id_intern]) {
-        acc[id_intern] = {
-          id: item.id_intern,
+        acc[id_intern] = {  
+          id: id_intern,
           name: name,
           lastname: lastname,
           mothername: mothername,
@@ -122,8 +128,6 @@ export const getAllDataInternsService = async () => {
           total_hours: item.total_hours,
           pending_hours: item.pending_hours,
           completed_hours: item.completed_hours,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
           events: [],
         };
       }
@@ -131,7 +135,7 @@ export const getAllDataInternsService = async () => {
       const is_supervisor = responsible_intern_id == id_intern;
 
       acc[id_intern].events.push({
-        event_id: item.event_id,
+        event_id: id,
         title: item.title,
         worked_hours: item.worked_hours,
         type: item.type,
@@ -141,11 +145,24 @@ export const getAllDataInternsService = async () => {
         notes: item.notes || '',
         is_supervisor: is_supervisor,
       });
+
+
       return acc;
     }, []);
     return Object.values(groupedInterns);
+
   } catch (error) {
     console.error('Error in InternsService.getAllDataInternsService:', error);
     throw new Error('Error fetching Interns');
+  }
+};
+
+export const createInternService = async (intern: Intern) => {
+  try {
+    const newIntern = createInternInteractor(intern);
+    return newIntern;
+  } catch (error) {
+    console.error('Error in internsService.createInternService:', error);
+    throw new Error('Error creating intern');
   }
 };
