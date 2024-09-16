@@ -91,3 +91,23 @@ export const removePermission = async (ides: rolePermissionsRequest) => {
     throw error;
   }
 };
+
+export const getRolesProfessor = async () => {
+  try {
+    const rolesProfessor = await db(rolesTable).where('category', 'professor').returning('*');
+    return rolesProfessor;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getRolesStudent = async () => {
+  try {
+    const rolesStudent = await db(rolesTable).where('category', 'student').returning('*');
+    return rolesStudent;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
