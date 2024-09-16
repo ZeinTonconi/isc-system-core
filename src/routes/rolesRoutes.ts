@@ -17,5 +17,7 @@ router.route('/').get(checkUserAuth, validateBody(RolesByNameSchema), RolesContr
 router.route('/').post(checkUserAuth, validateBody(baseRolSchema), RolesController.createRol);
 router.route('/:id').put(checkUserAuth, validateBody(baseRolSchema), RolesController.editRol);
 router.route('/:id').delete(checkUserAuth, RolesController.disableRol);
+router.route('/student').get(checkUserAuth, RolesController.getRolesStudent);
+router.route('/professor').get(checkUserAuth, RolesController.getRolesProfessor);
 
 export default router;

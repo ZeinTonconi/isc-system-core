@@ -1,6 +1,7 @@
 import Rol from '../models/rol';
 import rolePermissionsRequest from '../models/rolePermissionRequestInterface';
 import RolePermissionsResponse from '../models/rolePermissionResponseInterface';
+import RolesResponse from '../models/rolesResponse';
 import * as RolesRepository from '../repositories/rolesRepository';
 
 export const getRoles = async (rolName: string) => {
@@ -103,3 +104,29 @@ function filterEqualName(roles: RolePermissionsResponse, roleNameToSearch: strin
   });
   return response;
 }
+
+const filterAvailableRoles = (roles: RolesResponse[]): RolesResponse[] => {
+  return roles.filter(rol => !rol.disabled);
+};
+
+export const getRolesProfessor = async () => {
+  try {
+    const roles = await RolesRepository.getRolesProfessor();
+    const response = filterAvailableRoles(roles);
+    return response;
+  } catch (error) {
+    console.error('Error fetching Roles:', error);
+    throw error;
+  }
+};
+
+export const getRolesStudent = async () => {
+  try {
+    const roles = await RolesRepository.getRolesStudent();
+    const response = filterAvailableRoles(roles);
+    return response;
+  } catch (error) {
+    console.error('Error fetching Roles:', error);
+    throw error;
+  }
+};
