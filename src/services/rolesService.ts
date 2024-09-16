@@ -1,20 +1,28 @@
 import Rol from '../models/rol';
-import RolComplete from '../models/rolDisabled';
+import rolePermissionsRequest from '../models/rolePermissionRequestInterface';
+import RolePermissionsResponse from '../models/rolePermissionResponseInterface';
 import * as RolesRepository from '../repositories/rolesRepository';
 
 export const getRoles = async (rolName: string) => {
   try {
     const roles = await RolesRepository.getRoles();
-    if (rolName && rolName.length > 0) {
-      const rolesByName = roles.filter((rol: RolComplete) => {
-        return rol.name.toLowerCase().startsWith(rolName.toLowerCase()) && !rol.disabled;
-      });
-      return rolesByName;
-    }
-    const filteredRoles = roles.filter((rol: RolComplete) => {
-      return !rol.disabled;
+    const response: RolePermissionsResponse = {};
+    Object.keys(roles).forEach(roleName => {
+      const rolePermissions = roles[roleName];
+      if (
+        (rolName &&
+          roleName.toLowerCase().startsWith(rolName.toLowerCase()) &&
+          !rolePermissions.disabled) ||
+        (!rolName && !rolePermissions.disabled)
+      ) {
+        response[roleName] = {
+          id: rolePermissions.id,
+          disabled: rolePermissions.disabled,
+          permissions: rolePermissions.permissions,
+        };
+      }
     });
-    return filteredRoles;
+    return response;
   } catch (error) {
     console.error('Error fetching Roles:', error);
     throw error;
@@ -24,10 +32,8 @@ export const getRoles = async (rolName: string) => {
 export const createRol = async (rol: Rol) => {
   try {
     const similarRoles = await getRoles(rol.name);
-    const equalRoles = similarRoles.filter((rolComparer: Rol) => {
-      return rol.name.toLowerCase() === rolComparer.name.toLowerCase();
-    });
-    if (equalRoles.length > 0) {
+    const equalRoles = filterEqualName(similarRoles, rol.name);
+    if (Object.keys(equalRoles).length !== 0) {
       throw Error('there is another Rol with the same name');
     }
     const [newRol] = await RolesRepository.createRol(rol);
@@ -41,10 +47,8 @@ export const createRol = async (rol: Rol) => {
 export const editRol = async (rol: Rol, id: number) => {
   try {
     const similarRoles = await getRoles(rol.name);
-    const equalRoles = similarRoles.filter((rolComparer: Rol) => {
-      return rol.name.toLowerCase() === rolComparer.name.toLowerCase();
-    });
-    if (equalRoles.length > 0) {
+    const equalRoles = filterEqualName(similarRoles, rol.name);
+    if (Object.keys(equalRoles).length !== 0) {
       throw Error('there is another Rol with the same name');
     }
     const editedRol = await RolesRepository.editRol(rol, id);
@@ -64,3 +68,38 @@ export const disableRol = async (id: number) => {
     throw error;
   }
 };
+
+export const addPermission = async (ides: rolePermissionsRequest) => {
+  try {
+    const rolePermission = await RolesRepository.addPermission(ides);
+    return rolePermission;
+  } catch (error) {
+    console.error('Error while deleting Rol:', error);
+    throw error;
+  }
+};
+
+export const removePermission = async (ides: rolePermissionsRequest) => {
+  try {
+    const rolePermission = await RolesRepository.removePermission(ides);
+    return rolePermission;
+  } catch (error) {
+    console.error('Error while deleting Rol:', error);
+    throw error;
+  }
+};
+
+function filterEqualName(roles: RolePermissionsResponse, roleNameToSearch: string) {
+  const response: RolePermissionsResponse = {};
+  Object.keys(roles).forEach(roleName => {
+    const rolePermissions = roles[roleName];
+    if (roleName.toLowerCase() === roleNameToSearch.toLowerCase()) {
+      response[roleName] = {
+        id: rolePermissions.id,
+        disabled: rolePermissions.disabled,
+        permissions: rolePermissions.permissions,
+      };
+    }
+  });
+  return response;
+}
