@@ -10,11 +10,11 @@ const config = {
     port: Number(process.env.SERVER_PORT) || DEFAULT_SERVER_PORT,
   },
   database: {
-    host: process.env.DB_HOST || 'localhost',
-    name: process.env.DB_NAME || 'postgres',
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    port: process.env.DB_PORT || 5466,
+    host: process.env.DB_HOST || 'ep-calm-bird-74128633-pooler.us-east-1.postgres.vercel-storage.com',
+    name: process.env.DB_NAME || 'verceldb',
+    user: process.env.DB_USER || 'default',
+    password: process.env.DB_PASSWORD || 'mGpl4xbjP6MB',
+    port: process.env.DB_PORT || 5432,
   },
   jwt: {
     tokenSecret: process.env.TOKEN_SECRET || 'yourSecretKey',
