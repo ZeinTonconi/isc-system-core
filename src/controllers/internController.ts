@@ -6,7 +6,8 @@ import {
   getInformationsIntern,
   getMyEventsInternService,
   getListInterns,
-  getInternByUserId
+  getInternByUserId,
+  getAllDataInternsService,
 } from '../services/internService';
 import { sendSuccess } from '../handlers/successHandler';
 import { handleError } from '../handlers/errorHandler';
@@ -41,7 +42,7 @@ export const getInternsByUserId = async (req: Request, res: Response) => {
       handleError(res, error);
     }
   }
-}
+};
 export const getInternsById = async (req: Request, res: Response) => {
   try {
     const { intern_id } = req.params;
@@ -114,4 +115,18 @@ export const getInternsController = async (req: Request, res: Response) => {
       handleError(res, error);
     }
   }
-}
+};
+
+export const getAllDataInternsControlller = async (req: Request, res: Response) => {
+  try {
+    const listIntern = await getAllDataInternsService();
+    if (!listIntern) {
+      return res.status(404).json({ success: false, message: 'Interns not found' });
+    }
+    sendSuccess(res, listIntern, 'Interns with full data retrieved succesfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};

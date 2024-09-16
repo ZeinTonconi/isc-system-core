@@ -25,19 +25,19 @@ export const updateHoursInterns = async (
   }
 };
 
-export const getInternsByUserId = async(userId: number) => {
+export const getInternsByUserId = async (userId: number) => {
   try {
     const infoIntern = await db(`${tableName} as in`)
       .join('user_profile as up', 'in.user_profile_id', 'up.id')
-      .select('up.*',"in.id as id_intern", 'in.*')
-      .where('in.user_profile_id',userId)
+      .select('up.*', 'in.id as id_intern', 'in.*')
+      .where('in.user_profile_id', userId)
       .first();
     return infoIntern;
   } catch (error) {
     console.error('Error in InternsRepository.getRecordIntern', error);
     throw new Error('Error fetching Interns');
   }
-}
+};
 export const getInternsById = async (internId: number) => {
   try {
     const event = await db(tableName).where('id', internId).first();
@@ -85,10 +85,36 @@ export const getListIntern = async () => {
   try {
     const infoIntern = await db(`${tableName} as in`)
       .join('user_profile as up', 'in.user_profile_id', 'up.id')
-      .select('up.*','in.id as id_intern', 'in.*')
+      .select('up.*', 'in.id as id_intern', 'in.*');
     return infoIntern;
   } catch (error) {
     console.error('Error in InternsRepository.getRecordIntern', error);
+    throw new Error('Error fetching Interns');
+  }
+};
+
+export const getAllDataInternsRepository = async () => {
+  try {
+    const infoIntern = await db(`${tableName} as in`)
+      .join('user_profile as up', 'in.user_profile_id', 'up.id')
+      .join('events_interns as ei', 'in.id', 'ei.intern_id')
+      .join('events as e', 'ei.event_id', 'e.id')
+      .select(
+        'up.name',
+        'up.lastname',
+        'up.mothername',
+        'up.code',
+        'in.id as id_intern',
+        'in.*',
+        'e.responsible_intern_id',
+        'e.title',
+        'ei.created_at as registration_date',
+        'ei.updated_at as last_update',
+        'ei.*'
+      );
+    return infoIntern;
+  } catch (error) {
+    console.error('Error in InternsRepository.getAllDataInternsRepository', error);
     throw new Error('Error fetching Interns');
   }
 };

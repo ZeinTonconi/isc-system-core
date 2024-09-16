@@ -5,6 +5,7 @@ import {
   createEventController,
   updateEventController,
   deleteEventController,
+  finishEventController,
 } from '../controllers/eventsController';
 import { checkUserAuth } from '../middlewares/checkUserAuth';
 
@@ -15,5 +16,6 @@ router.route('/:id').get(checkUserAuth, getEventsByIdController);
 router.route('/').post(checkUserAuth, createEventController);
 router.route('/:id').put(checkUserAuth, updateEventController);
 router.route('/:id').delete(checkUserAuth, deleteEventController);
+router.route('/finish/:id').put(checkUserAuth, finishEventController);
 
 export default router;

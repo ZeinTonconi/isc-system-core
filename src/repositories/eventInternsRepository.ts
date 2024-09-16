@@ -20,6 +20,8 @@ export const getEventInterns = async (eventId: number) => {
           'code', "up"."code",
           'type', "ei"."type",
           'worked_hours', "ei"."worked_hours",
+          'notes', "ei"."notes",
+          'attendance', "ei"."attendance",
           'total_hours', "i"."total_hours",
           'pending_hours', "i"."pending_hours",
           'completed_hours', "i"."completed_hours",
