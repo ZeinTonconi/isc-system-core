@@ -66,3 +66,23 @@ export const removePermission = async (ides: rolePermissionsRequest) => {
     throw error;
   }
 };
+
+export const getRolesStudent = async () => {
+  try {
+    const roles = await RolesService.getRolesStudent();
+    return roles;
+  } catch (error) {
+    console.error('Error getting Roles Student:', error);
+    throw error;
+  }
+};
+
+export const getRolesProfessor = async () => {
+  try {
+    const roles = await RolesService.getRolesProfessor();
+    return roles;
+  } catch (error) {
+    console.error('Error getting Roles Professor:', error);
+    throw error;
+  }
+};

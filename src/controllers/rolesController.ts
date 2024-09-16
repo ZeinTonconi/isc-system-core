@@ -95,3 +95,25 @@ export const removePermission = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const getRolesStudent = async (req: Request, res: Response) => {
+  try {
+    const rolesStudent = await RolesInteractor.getRolesStudent();
+    sendSuccess(res, rolesStudent, 'Roles student retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const getRolesProfessor = async (req: Request, res: Response) => {
+  try {
+    const rolesProfessor = await RolesInteractor.getRolesProfessor();
+    sendSuccess(res, rolesProfessor, 'Roles professor retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
