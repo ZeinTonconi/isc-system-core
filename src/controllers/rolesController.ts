@@ -3,6 +3,7 @@ import { handleError } from '../handlers/errorHandler';
 import { sendSuccess } from '../handlers/successHandler';
 import * as RolesInteractor from '../interactors/rolesInteractor';
 import Rol from '../models/rol';
+import rolePermissionsRequest from '../models/rolePermissionRequestInterface';
 
 export const getRoles = async (req: Request, res: Response) => {
   const rolName = req.body.name;
@@ -58,6 +59,58 @@ export const disableRol = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'can not delet rol' });
     }
     sendSuccess(res, disabledRol, 'Role deleted successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const addPermission = async (req: Request, res: Response) => {
+  const ides: rolePermissionsRequest = req.body;
+  try {
+    const rolePermission = await RolesInteractor.addPermission(ides);
+    if (!rolePermission) {
+      return res.status(404).json({ success: false, message: 'can not delet rol' });
+    }
+    sendSuccess(res, rolePermission, 'permission attach successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const removePermission = async (req: Request, res: Response) => {
+  const ides: rolePermissionsRequest = req.body;
+  try {
+    const rolePermission = await RolesInteractor.removePermission(ides);
+    if (!rolePermission) {
+      return res.status(404).json({ success: false, message: 'can not delet rol' });
+    }
+    sendSuccess(res, rolePermission, 'permission attach successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const getRolesStudent = async (req: Request, res: Response) => {
+  try {
+    const rolesStudent = await RolesInteractor.getRolesStudent();
+    sendSuccess(res, rolesStudent, 'Roles student retrieved successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      handleError(res, error);
+    }
+  }
+};
+
+export const getRolesProfessor = async (req: Request, res: Response) => {
+  try {
+    const rolesProfessor = await RolesInteractor.getRolesProfessor();
+    sendSuccess(res, rolesProfessor, 'Roles professor retrieved successfully');
   } catch (error) {
     if (error instanceof Error) {
       handleError(res, error);

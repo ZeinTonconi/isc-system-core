@@ -1,4 +1,5 @@
 import Rol from '../models/rol';
+import rolePermissionsRequest from '../models/rolePermissionRequestInterface';
 import * as RolesService from '../services/rolesService';
 import { getUserByRol } from '../services/userService';
 
@@ -42,6 +43,46 @@ export const disableRol = async (id: number) => {
     return disabledRol;
   } catch (error) {
     console.error('Error on delete Rol:', error);
+    throw error;
+  }
+};
+
+export const addPermission = async (ides: rolePermissionsRequest) => {
+  try {
+    const rolePermission = await RolesService.addPermission(ides);
+    return rolePermission;
+  } catch (error) {
+    console.error('Error on attach permission', error);
+    throw error;
+  }
+};
+
+export const removePermission = async (ides: rolePermissionsRequest) => {
+  try {
+    const rolePermission = await RolesService.removePermission(ides);
+    return rolePermission;
+  } catch (error) {
+    console.error('Error on attach permission', error);
+    throw error;
+  }
+};
+
+export const getRolesStudent = async () => {
+  try {
+    const roles = await RolesService.getRolesStudent();
+    return roles;
+  } catch (error) {
+    console.error('Error getting Roles Student:', error);
+    throw error;
+  }
+};
+
+export const getRolesProfessor = async () => {
+  try {
+    const roles = await RolesService.getRolesProfessor();
+    return roles;
+  } catch (error) {
+    console.error('Error getting Roles Professor:', error);
     throw error;
   }
 };
