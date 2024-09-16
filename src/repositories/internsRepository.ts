@@ -2,7 +2,28 @@ import Intern from 'src/models/internInterface';
 import db from './pg-connection';
 
 const tableName = 'interns';
-
+export const getSupervisor = async() => {
+  try {
+    const infoIntern = await db(`${tableName} as in`)
+      .join('user_profile as up', 'in.user_profile_id', 'up.id')
+      .join('events as e', 'in.id', 'e.responsible_intern_id')
+      .select(
+        'up.name',
+        'up.lastname',
+        'up.mothername',
+        'up.code',
+        'in.id as id_intern',
+        'in.*',
+        'e.id',
+        'e.responsible_intern_id',
+        'e.title',
+      );
+    return infoIntern;
+  } catch (error) {
+    console.error('Error in InternsRepository.getAllDataInternsRepository', error);
+    throw new Error('Error fetching Interns');
+  }
+}
 export const updateHoursInterns = async (
   internId: number,
   newHoursPending: number,
@@ -107,11 +128,9 @@ export const getAllDataInternsRepository = async () => {
         'up.code',
         'in.id as id_intern',
         'in.*',
+        'e.id',
         'e.responsible_intern_id',
         'e.title',
-        'ei.created_at as registration_date',
-        'ei.updated_at as last_update',
-        'ei.*'
       );
     return infoIntern;
   } catch (error) {
