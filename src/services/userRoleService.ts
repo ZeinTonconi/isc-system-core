@@ -3,7 +3,7 @@ import { buildLogger } from '../plugin/logger';
 
 const logger = buildLogger('userRoleService');
 
-export const createUserRole = async (userId: number, studentRole: number) => {
+export const createUserRole = async (userId: string, studentRole: number) => {
   try {
     return UserRolesRepository.assignUserRole(userId, studentRole);
   } catch (error) {
@@ -12,7 +12,7 @@ export const createUserRole = async (userId: number, studentRole: number) => {
   }
 };
 
-export const createUserRoles = async (userId: number, roles: number[]) => {
+export const createUserRoles = async (userId: string, roles: number[]) => {
   try {
     const results = await Promise.all(
       roles.map(roleId => UserRolesRepository.assignUserRole(userId, roleId))
@@ -24,7 +24,7 @@ export const createUserRoles = async (userId: number, roles: number[]) => {
   }
 };
 
-export const deleteUserRole = async (userId: number) => {
+export const deleteUserRole = async (userId: string) => {
   try {
     logger.debug(`Attempting to delete user role with user id: ${userId}`);
     await UserRolesRepository.deleteUserRole(userId);

@@ -3,9 +3,8 @@ import * as UserRoleService from '../services/userRoleService';
 import * as ProfessorService from '../services/professorService'
 import * as StudentService from '../services/studentService'
 import { NotFoundError } from "../errors/notFoundError";
-import { createProfessorService } from '../services/professorService';
 
-export const deleteUser = async (userId: number) => {
+export const deleteUser = async (userId: string) => {
   try {
     const user = await UserProfileService.getUserById(userId);
 
@@ -13,7 +12,7 @@ export const deleteUser = async (userId: number) => {
       throw new NotFoundError('User not found');
     }
 
-    await UserProfileService.deleteUser(userId);
+    await UserProfileService.deleteUser(parseInt(userId));
     await UserRoleService.deleteUserRole(userId);
   } catch (error) {
     console.error('Error deleting student:', error);
@@ -30,7 +29,7 @@ export const getAllUsers = async () => {
   }
 };
 
-export const getUser = async (userId: number) => {
+export const getUser = async (userId: string) => {
   try {
     return await UserProfileService.getUser(userId);
   } catch (error) {
@@ -64,11 +63,18 @@ export const createUser = async (userData: any) => {
   }
 };
 
-// export const updateUser = async (userId: number, userProfileData:createUserRequest) => {
-//   try {
-//     return await UserProfileService.updateUser(userId);
-//   } catch (error) {
-//     console.error('Error getting user:', error);
-//     throw new Error((error as Error).message);
-//   }
-// };
+export const updateUser = async (userId: string, userProfileData:any) => {
+  try {
+    const updatedUserProfile = await UserProfileService.updateUserProfile(userId, userProfileData);
+    if (userProfileData.isStudent) {
+      await StudentService.handleStudentUpdate(userId, userProfileData);
+    } else {
+      await ProfessorService.handleProfessorUpdate(userId, userProfileData);
+    }
+    await UserProfileService.updateUserRoles(userId, userProfileData.roles);
+    return updatedUserProfile;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw new Error((error as Error).message);
+  }
+};

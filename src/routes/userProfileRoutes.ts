@@ -30,9 +30,9 @@ router
     .post(
         checkUserAuth,
         UserProfileController.createUser)
-// router
-//     .route('/:id')
-//     .put(
-//         checkUserAuth,
-//         UserProfileController.updateUser)
+router
+    .route('/:id')
+    .put(
+        checkUserAuth,
+        UserProfileController.updateUser)
 export default router;

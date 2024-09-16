@@ -1,5 +1,6 @@
 import createProfessorRequest from '../dtos/createProfessorRequest';
 import * as UserProfileRepository from '../repositories/userProfileRepository';
+import * as UserRoleRepository from '../repositories/userRolesRepository'
 import * as PermissionInteractor from '../interactors/permissionsInteractor'
 import UserRole from '../constants/roles';
 import UserResponse from '../models/genericUserResponse';
@@ -41,8 +42,8 @@ export const deleteUser = async (userId: number) => {
   }
 };
 
-export const getUserById = async (userId: number): Promise<UserResponse | null> => {
-  return UserProfileRepository.getUserById(userId);
+export const getUserById = async (userId: string): Promise<UserResponse | null> => {
+  return UserProfileRepository.getUserById(parseInt(userId));
 };
 
 export const getAllUsers = async (): Promise<UserResponse[] | null> => {
@@ -74,13 +75,47 @@ export const getAllUsers = async (): Promise<UserResponse[] | null> => {
   }
 };
 
-export const getUser = async (userId: number): Promise<UserResponse | null> => {
-  const user = await UserProfileRepository.getUserById(userId);
+export const getUser = async (userId: string): Promise<UserResponse | null> => {
+  const user = await UserProfileRepository.getUserById(parseInt(userId));
   if (!user) { throw new NotFoundError(`User not found with such id ${userId}`) }
-  const rolesAndPermissions = await PermissionInteractor.getRolesAndPermissions(userId);
+  const rolesAndPermissions = await PermissionInteractor.getRolesAndPermissions(parseInt(userId));
   return {
     ...user,
     rolesAndPermissions
   }
 
 }
+
+export const updateUserProfile = async (userId: string, userProfileData: any) => {
+  try {
+    const userProfileRequest = {
+      name: userProfileData.name,
+      lastname: userProfileData.lastname,
+      mothername: userProfileData.mothername,
+      code: userProfileData.code,
+      email: userProfileData.email,
+      phone: userProfileData.phone
+    }
+    const updatedProfile = await UserProfileRepository.updateUserProfile(userId, userProfileRequest);
+    return updatedProfile;
+  } catch (error) {
+    logger.error(`Error updating user: ${error}`);
+    throw error;
+  }
+};
+
+export const updateUserRoles = async (userId: string, roles: number[]) => {
+  try {
+    await UserRoleRepository.deleteUserRole(userId);
+    const primaryRole = roles[0];
+    await UserProfileRepository.updateUserProfileRole(userId, primaryRole);
+
+    const remainingRoles = roles.slice(1);
+    for (const roleId of remainingRoles) {
+      await UserRoleRepository.assignUserRole(userId, roleId);
+    }
+  } catch (error) {
+    logger.error(`Error updating user role: ${error}`);
+    throw error;
+  }
+};

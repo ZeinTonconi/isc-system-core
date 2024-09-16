@@ -46,3 +46,25 @@ export const getAllUsers = async(): Promise<UserResponse[] | null> => {
     throw error
   }
 }
+
+export const updateUserProfile = async (userId: string, userProfileData: any) => {
+  try {
+    const updatedProfile = await db(TABLE_NAME)
+      .where('id', userId)
+      .update(userProfileData)
+      .returning('*');
+    return updatedProfile;
+  } catch (error) {
+    console.log('Error updating user profile:', error);
+    throw error;
+  }
+};
+
+export const updateUserProfileRole = async (userId: string, roleId: number) => {
+  try {
+    await db(TABLE_NAME).where('id', userId).update({ role_id: roleId });
+  } catch (error) {
+    console.log('Error updating user profile role:', error);
+    throw error;
+  }
+};
