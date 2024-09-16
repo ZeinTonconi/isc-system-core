@@ -22,7 +22,7 @@ export const getUserByEmail = async (email: string) => {
 
 export const getStudents = async () => {
   try {
-    const students = await db('users as u')
+    const students = await db('user_profile as u')
       .select(
         'u.id',
         'u.code',
@@ -41,7 +41,7 @@ export const getStudents = async () => {
 
 export const getStudentByCode = async (userCode: number) => {
   try {
-    const student = await db('users as u')
+    const student = await db('user_profile as u')
       .select(
         'u.id',
         'u.name as student_name',
@@ -63,7 +63,7 @@ export const getStudentByCode = async (userCode: number) => {
 
 export const createUser = async (userData: User) => {
   try {
-    const [newUser] = await db('users').insert(userData).returning('id');
+    const [newUser] = await db('user_profile').insert(userData).returning('id');
     return newUser;
   } catch (error) {
     console.error(error);
@@ -124,7 +124,7 @@ export const deleteUser = async (userId: number) => {
  */
 export const updateUser = async (userId: number, userData: User | createUserRequest) => {
   try {
-    await db('users').where('id', userId).update(userData);
+    await db('user_profile').where('id', userId).update(userData);
     return userData;
   } catch (error) {
     console.error('Error updating user:', error);
@@ -168,5 +168,25 @@ export const getProfessorById = async (id: string) => {
   } catch (error) {
     logger.error(`Error in getProfessorById for id: ${id}`);
     throw new Error(`Unable to retrieve professor with id: ${id}`);
+  }
+};
+export const getUserByCode = async (userCode: number) => {
+  try {
+    const student = await db('user_profile as u')
+      .select(
+        'u.id',
+        'u.name as student_name',
+        'u.lastname as lastName',
+        'u.mothername as motherName',
+        'u.code'
+      )
+      .join('roles as r', 'u.role_id', '=', 'r.id')
+      .where('u.code', userCode)
+      .first();
+
+    return student || null;
+  } catch (error) {
+    console.error('Error in getStudentByCode:', error);
+    throw new Error('Error fetching student by code');
   }
 };

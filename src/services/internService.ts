@@ -1,3 +1,4 @@
+import Intern from 'src/models/internInterface';
 import {
   updateHoursInterns,
   getInternsById,
@@ -7,6 +8,7 @@ import {
   getInternsByUserId,
   getAllDataInternsRepository,
 } from '../repositories/internsRepository';
+import { createInternInteractor } from '../interactors/internInteractor';
 
 export const updateHours = async (internId: number, type: string, duration_hours: number) => {
   try {
@@ -147,5 +149,15 @@ export const getAllDataInternsService = async () => {
   } catch (error) {
     console.error('Error in InternsService.getAllDataInternsService:', error);
     throw new Error('Error fetching Interns');
+  }
+};
+
+export const createInternService = async (intern: Intern) => {
+  try {
+    const newIntern = createInternInteractor(intern);
+    return newIntern;
+  } catch (error) {
+    console.error('Error in internsService.createInternService:', error);
+    throw new Error('Error creating intern');
   }
 };

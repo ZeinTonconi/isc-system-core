@@ -1,3 +1,4 @@
+import Intern from 'src/models/internInterface';
 import db from './pg-connection';
 
 const tableName = 'interns';
@@ -116,5 +117,15 @@ export const getAllDataInternsRepository = async () => {
   } catch (error) {
     console.error('Error in InternsRepository.getAllDataInternsRepository', error);
     throw new Error('Error fetching Interns');
+  }
+};
+
+export const createInternRepo = async (intern: Intern) => {
+  try {
+    const internRes = await db(tableName).insert(intern).returning('*');
+    return internRes;
+  } catch (error) {
+    console.error('Error in internsRepository.createInternRepo:', error);
+    throw new Error('Error creating Intern');
   }
 };
