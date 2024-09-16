@@ -1,5 +1,6 @@
 import * as StudentService from '../services/studentService';
 import * as UserService from '../services/userService';
+import * as UserProfileService from '../services/userProfileService'
 import * as UserRoleService from '../services/userRoleService';
 import createUserRequest from '../dtos/createUserRequest';
 import { NotFoundError } from '../errors/notFoundError';
@@ -65,7 +66,7 @@ export const deleteStudent = async (studentId: number) => {
       throw new NotFoundError('Student not found');
     }
 
-    await UserService.deleteUser(studentId);
+    await UserProfileService.deleteUser(studentId);
   } catch (error) {
     console.error('Error deleting student:', error);
     throw new Error((error as Error).message);

@@ -11,6 +11,8 @@ export const getRoleAndPermissions = async (id: number) => {
     const profileRolesAndPermissions = await db(userProfileTable)
       .select(
         'roles.name as role_name',
+        'roles.id as role_id',
+        'permissions.id as permission_id',
         'permissions.name as permission_name',
         'permissions.description as permission_description',
         'permissions.display_name as permission_display_name',
@@ -28,6 +30,8 @@ export const getRoleAndPermissions = async (id: number) => {
     const userRolesAndPermissions = await db(userRolesTable)
       .select(
         'roles.name as role_name',
+        'roles.id as role_id',
+        'permissions.id as permission_id',
         'permissions.name as permission_name',
         'permissions.description as permission_description',
         'permissions.display_name as permission_display_name',
@@ -45,13 +49,15 @@ export const getRoleAndPermissions = async (id: number) => {
       
     const combinedRolesAndPermissionsRaw = [...profileRolesAndPermissions, ...userRolesAndPermissions];
     const rolesAndPermissions = combinedRolesAndPermissionsRaw.reduce((acc, row) => {
-      const { role_name, permission_name, permission_description, permission_display_name, permission_path, permission_sort } = row;
-      if (!acc[role_name]) {
-        acc[role_name] = {
+      const { role_name, role_id, permission_id, permission_name, permission_description, permission_display_name, permission_path, permission_sort } = row;
+      if (!acc[role_id]) {
+        acc[role_id] = {
+          role_name: role_name,
           permissions: []
         };
       }
-      acc[role_name].permissions.push({
+      acc[role_id].permissions.push({
+        permission_id: permission_id,
         name: permission_name,
         description: permission_description,
         display_name: permission_display_name,
