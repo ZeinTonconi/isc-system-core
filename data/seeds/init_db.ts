@@ -5,8 +5,6 @@ const rolesTable = 'roles';
 const rolesPermissionsTable = 'role_permissions'
 const permissionsTable = 'permissions'
 const professorTable = 'professors';
-const permissionCategoriesTable = 'permission_categories';
-const permissionsTable = 'permissions'
 const eventTable = 'events';
 const internsTable = 'interns';
 const eventInternTable = 'events_interns';
@@ -18,7 +16,7 @@ exports.seed = async function (knex: Knex) {
   await knex(permissionCategoriesTable).del();
   await knex(professorTable).del();
   await knex(permissionCategoriesTable).del();
-  await knex(internTable).del();
+  await knex(internsTable).del();
   await knex(eventTable).del();
   await knex(eventInternTable).del();
   await knex(rolesPermissionsTable).del();
@@ -27,6 +25,9 @@ exports.seed = async function (knex: Knex) {
     { id: 1, name: 'admin' },
     { id: 2, name: 'professor' },
     { id: 3, name: 'student' },
+    { id: 4, name: 'intern' },
+    { id: 5, name: 'program_director' },
+    { id: 6, name: 'supervisor' },
   ]);
 
   await knex(userProfileTable).insert([
@@ -96,13 +97,50 @@ exports.seed = async function (knex: Knex) {
     code: '12345',
   });
 
+  await knex(userProfileTable).insert({
+    id: 3,
+    username: 'intern',
+    name: 'INTERN-ACME',
+    lastname: 'Marechal',
+    mothername: 'Marin',
+    password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
+    email: 'intern@gmail.com',
+    phone: '12345678',
+    role_id: 4,
+    code: '12345',
+  });
+  await knex(userProfileTable).insert({
+    id: 4,
+    username: 'director',
+    name: 'DIRECTOR-ACME',
+    lastname: 'Marechal',
+    mothername: 'Marin',
+    password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
+    email: 'director@gmail.com',
+    phone: '12345678',
+    role_id: 5,
+    code: '12345',
+  });
+  await knex(userProfileTable).insert({
+    id: 5,
+    username: 'supervisor',
+    name: 'SUPERVISOR-ACME',
+    lastname: 'Marechal',
+    mothername: 'Marin',
+    password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
+    email: 'supervisor@gmail.com',
+    phone: '12345678',
+    role_id: 6,
+    code: '12345',
+  });
+
   await knex('professors').insert({
     id: 2,
     degree: 'PhD.',
     department: 'Computer Science',
     specialty: 'Artificial Intelligence',
   });
-  await knex(internTable).insert([
+  await knex(internsTable).insert([
     {
       id: 1,
       user_profile_id: 1,
@@ -119,7 +157,7 @@ exports.seed = async function (knex: Knex) {
     },
     {
       id: 3,
-      user_profile_id: 2,
+      user_profile_id: 3,
       total_hours: 20,
       pending_hours: 10,
       completed_hours: 10,

@@ -1,3 +1,4 @@
+import EventInterns from '../models/eventsInternsInterface';
 import db from './pg-connection';
 
 const tableName = 'events_interns';
@@ -12,12 +13,15 @@ export const getEventInterns = async (eventId: number) => {
         'e.id as id_events',
         'e.*',
         db.raw(`array_agg(json_build_object(
-          'id_interns', "i"."id",
+          'id_intern', "i"."id",
           'name', "up"."name",
           'lastname', "up"."lastname",
           'mothername', "up"."mothername",
           'code', "up"."code",
           'type', "ei"."type",
+          'worked_hours', "ei"."worked_hours",
+          'notes', "ei"."notes",
+          'attendance', "ei"."attendance",
           'total_hours', "i"."total_hours",
           'pending_hours', "i"."pending_hours",
           'completed_hours', "i"."completed_hours",
@@ -68,13 +72,18 @@ export const getEventInternsByTwoId = async (eventId: number, internId: number) 
   }
 };
 
-export const registerInternProcess = async (eventId: number, internId: number) => {
+export const registerInternProcess = async (
+  eventId: number,
+  internId: number,
+  assigned_hours: number
+) => {
   try {
     const registerInterns = await db(tableName)
       .insert({
         event_id: eventId,
         intern_id: internId,
         type: 'pending',
+        worked_hours: assigned_hours,
       })
       .returning('*');
     return registerInterns;
@@ -160,5 +169,24 @@ export const updateInternAttendance = async (
   } catch (error) {
     console.error('Error in updateInternAttendance', error);
     throw new Error('Error updating attendance status for Interns');
+  }
+};
+
+// TODO: refactor all update controllers to use this one
+export const updateEventInternsRepository = async (
+  eventId: number,
+  internId: number,
+  eventIntern: EventInterns
+) => {
+  try {
+    const eventResponse = await db(tableName)
+      .where('event_id', eventId)
+      .where('intern_id', internId)
+      .update({...eventIntern, updated_at: new Date()})
+      .returning('*');
+    return eventResponse;
+  } catch (error) {
+    console.error('Error in eventInternsRepository.updateEventInterns:', error);
+    throw new Error('Error updating EventIntern');
   }
 };
