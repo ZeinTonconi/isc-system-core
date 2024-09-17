@@ -25,6 +25,9 @@ exports.seed = async function (knex: Knex) {
     { id: 1, name: 'admin', category: 'admin' },
     { id: 2, name: 'professor', category: 'professor' },
     { id: 3, name: 'student', category: 'student' },
+    { id: 4, name: 'intern', category: 'student' },
+    { id: 5, name: 'program_director', category: 'professor' },
+    { id: 6, name: 'supervisor', category: 'student' },
   ]);
 
   await knex(userProfileTable).insert([
