@@ -6,7 +6,7 @@ export const getRolesAndPermissions = async (userId: number) => {
       const rolesAndPermissions = await userService.getUserRolesAndPermissions(userId);
   
       if (!rolesAndPermissions|| Object.keys(rolesAndPermissions).length === 0) {
-        throw new NotFoundError('Permissions not found');
+        return [];
       }
       return rolesAndPermissions;
     } catch (error) {

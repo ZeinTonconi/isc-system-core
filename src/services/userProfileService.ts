@@ -19,7 +19,7 @@ export const createUserProfile = async (createUserProfileRequest: createProfesso
       password: 'createpassworddefect',
       mothername: createUserProfileRequest.mothername,
       phone: createUserProfileRequest.phone,
-      role_id: UserRole.PROFESSOR.id,
+      role_id: createUserProfileRequest.isStudent ? UserRole.STUDENT.id : UserRole.PROFESSOR.id,
       code: createUserProfileRequest.code,
     };
     const newUserProfile = await UserProfileRepository.createUserProfile(userProfile);
