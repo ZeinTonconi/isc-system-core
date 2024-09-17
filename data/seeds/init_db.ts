@@ -354,6 +354,18 @@ exports.seed = async function (knex: Knex) {
     role_id: 6,
     code: '12345',
   });
+  await knex(userProfileTable).insert({
+    id: 6,
+    username: 'ZeinTonconi',
+    name: 'Zein',
+    lastname: 'Tonconi',
+    mothername: 'Mendoza',
+    password: '$2a$10$qv1IXHI4lhio8vJGS6O1UuIzTqTpdHY9dz5gyA9D5PFb1pGxJv3Kq',
+    email: 'zeintonconi@gmail.com',
+    phone: '12345678',
+    role_id: 3,
+    code:'54351',
+});
 
   await knex('professors').insert({
     id: 2,
