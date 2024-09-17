@@ -3,7 +3,7 @@ import { runMigrations } from './config/migrate';
 import app from './app';
 
 dotenv.config();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 runMigrations()
   .then(() => {

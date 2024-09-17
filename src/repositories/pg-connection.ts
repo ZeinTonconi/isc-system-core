@@ -1,7 +1,7 @@
 import knex from 'knex';
 import config from '../config/config';
 
-const { database } = config;
+const { database, env } = config;
 
 const db = knex({
   client: 'pg',
@@ -10,8 +10,8 @@ const db = knex({
     database: database.name,
     user: database.user,
     password: database.password,
-    port: 5466,
-    ssl: false,
+    port: Number(database.port),
+    ssl: env !== 'development',
   },
 });
 
