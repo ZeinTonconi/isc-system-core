@@ -12,6 +12,7 @@ const knexConfig: { [key: string]: import('knex').Knex.Config } = {
       password: database.password,
       port: Number(database.port as string) || 5432,
       ssl: false,
+      //revert
     },
     migrations: {
       directory: '../data/migrations',
