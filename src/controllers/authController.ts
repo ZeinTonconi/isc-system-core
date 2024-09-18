@@ -17,7 +17,7 @@ const login = async (req: Request, res: Response) => {
     const roles_permissions = await PermissionsInteractor.getRolesAndPermissions(resLogin.id)
     const result = {
       ...resLogin,
-      roles_permissions,
+       roles_permissions,
     };
     sendSuccess(res, result, 'Successfully logged in');
   } catch (error) {
