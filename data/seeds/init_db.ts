@@ -22,9 +22,12 @@ exports.seed = async function (knex: Knex) {
   await knex(rolesPermissionsTable).del();
 
   await knex(rolesTable).insert([
-    { id: 1, name: 'admin', category: 'admin' },
-    { id: 2, name: 'professor', category: 'professor' },
-    { id: 3, name: 'student', category: 'student' },
+    { id: 1, name: 'admin' },
+    { id: 2, name: 'professor' },
+    { id: 3, name: 'student' },
+    { id: 4, name: 'intern' },
+    { id: 5, name: 'program_director' },
+    { id: 6, name: 'supervisor' },
   ]);
 
   await knex(userProfileTable).insert([
