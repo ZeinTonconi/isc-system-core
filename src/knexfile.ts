@@ -47,7 +47,7 @@ const knexConfig: { [key: string]: import('knex').Knex.Config } = {
       user: database.user,
       password: database.password,
       ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: true,
       },
     },
     pool: {
@@ -55,10 +55,7 @@ const knexConfig: { [key: string]: import('knex').Knex.Config } = {
       max: 10,
     },
     migrations: {
-      directory: './data/migrations',
-    },
-    seeds: {
-      directory: './data/seeds',
+      tableName: 'knex_migrations',
     },
   },
 };
